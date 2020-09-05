@@ -39,7 +39,11 @@ export class ListComponent implements OnInit {
   private checkLoginStatus() {
     this.isLoggedIn = this.appService.isUserLoggedIn();
     this.isLoggedIn ? this.loginUserId = this.appService.getLoginUser().id : '';
-    this.appService.loginTrigger.subscribe((log: boolean) => { this.isLoggedIn = log; })
+    this.appService.loginTrigger.subscribe((log: boolean) => {
+      if (log !== null) {
+        this.isLoggedIn = log;
+      }
+    })
   }
   private getAllBooks() {
     this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {

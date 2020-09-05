@@ -33,6 +33,7 @@ export class LoginComponent implements OnInit {
   }
 
   checkUserExistance() {
+    console.log("this.loginForm.value ", this.loginForm.value);
     if (this.loginForm.valid) {
       this.loginService.checkLoginUser(this.loginForm.value).subscribe((res: AuthUser[]) => {
         console.log("res ", res);

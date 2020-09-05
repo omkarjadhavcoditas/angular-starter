@@ -1,6 +1,7 @@
 <div class="grid-container">
     <div class="grid-item"></div>
-    <div class="m-auto card ">
+    <card-web class="m-auto">
+
         <h2 class="text-center">{{isEdit?'Update':'Add New '}} Book</h2>
         <hr>
         <form class="main-form" [formGroup]="addBookForm">
@@ -17,6 +18,6 @@
                 <button class="button btn-login" (click)="addBook()">{{isEdit?'Update':'Add'}} Book</button>
             </div>
         </form>
-    </div>
+    </card-web>
 
 </div>

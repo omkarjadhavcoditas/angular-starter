@@ -15,8 +15,8 @@
       "id": 2
     },
     {
-      "firstName": "osj",
-      "lastName": "om",
+      "firstName": "User",
+      "lastName": "Lasst",
       "userName": "user",
       "password": "1111",
       "id": 3
@@ -27,36 +27,78 @@
       "userName": "newuser",
       "password": "1234",
       "id": 4
+    },
+    {
+      "firstName": "Omi",
+      "lastName": "Jadhav",
+      "userName": "Omi",
+      "password": "1234",
+      "id": 5
     }
   ],
   "allBooks": [
     {
       "name": "Bappa Morya",
-      "image": "https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Fquickerbettertech%2Ffiles%2F2019%2F06%2FThe-Shadow-King.jpg",
-      "price": "3214",
-      "user": 1,
-      "id": 2
-    },
-    {
-      "name": "User 1 book",
-      "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
-      "price": "29991",
-      "user": 3,
-      "id": 3
-    },
-    {
-      "name": "SjaaWadd",
-      "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
-      "price": "1999",
-      "id": 6,
+      "image": "https://lh6.googleusercontent.com/proxy/S_fmK6sox0BSdWFrIlDswZe_35bfZ1xfrAf5U1fJxuog-ua1icriCutRnDKWLiAOH0_WpW1dToGenmdpj5e8LQ=w180",
+      "price": "499",
+      "id": 2,
       "user": 1
     },
     {
-      "name": "Newbook",
+      "name": "Call Me God",
+      "image": "https://m.media-amazon.com/images/I/51pf5R6ECNL._SL500_.jpg",
+      "price": "2999",
+      "id": 3,
+      "user": 3
+    },
+    {
+      "name": "History Of Caves",
       "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
-      "price": "444",
+      "price": "12000",
+      "id": 4,
+      "user": 1
+    },
+    {
+      "name": "The Law Of Success",
+      "image": "https://m.media-amazon.com/images/I/41FLKI4LR2L._SL500_.jpg",
+      "price": "999",
       "user": 1,
+      "id": 5
+    },
+    {
+      "name": "Think & Grow Rich",
+      "image": "https://m.media-amazon.com/images/I/51vKha04DuL._SL500_.jpg",
+      "price": "1499",
+      "user": 5,
+      "id": 6
+    },
+    {
+      "name": "The Power Of Concious Mind",
+      "image": "https://m.media-amazon.com/images/I/61qJEwIdijL._SL500_.jpg",
+      "price": "15000",
+      "user": 5,
       "id": 7
+    },
+    {
+      "name": "Chanakya Niti",
+      "image": "https://m.media-amazon.com/images/I/61Edv0mBTXL._SL500_.jpg",
+      "price": "11000",
+      "user": 5,
+      "id": 8
+    },
+    {
+      "name": "Yes Please",
+      "image": "https://m.media-amazon.com/images/I/51XNAnQGe+L._SL500_.jpg",
+      "price": "399",
+      "user": 3,
+      "id": 9
+    },
+    {
+      "name": "Riding the Elephant",
+      "image": "https://m.media-amazon.com/images/I/51GFAcYL7DL._SL500_.jpg",
+      "price": "699",
+      "user": 3,
+      "id": 10
     }
   ]
 }
