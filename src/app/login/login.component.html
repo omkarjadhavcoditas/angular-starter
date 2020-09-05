@@ -1,0 +1,18 @@
+<div class="grid-container">
+    <div class="grid-item"></div>
+    <div class="m-auto card ">
+        <h2 class="text-center">Login</h2>
+        <hr>
+        <form class="main-form" [formGroup]="loginForm">
+            <label for="username">Username</label>
+            <input type="text" id="username" placeholder="Username" formControlName="userName">
+            <label for="password">Password</label>
+            <input type="password" id="password" placeholder="Password" formControlName="password">
+
+            <div class="text-center">
+                <button class="button btn-login" (click)="checkUserExistance()">Login</button>
+            </div>
+        </form>
+    </div>
+
+</div>

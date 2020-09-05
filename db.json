@@ -1,0 +1,62 @@
+{
+  "authUsers": [
+    {
+      "firstName": "Omkar",
+      "lastName": "Jadhav",
+      "userName": "Ojadhav",
+      "password": "1234",
+      "id": 1
+    },
+    {
+      "firstName": "Omkar",
+      "lastName": "Jad",
+      "userName": "user1",
+      "password": "pass",
+      "id": 2
+    },
+    {
+      "firstName": "osj",
+      "lastName": "om",
+      "userName": "user",
+      "password": "1111",
+      "id": 3
+    },
+    {
+      "firstName": "Omkar",
+      "lastName": "Kadja",
+      "userName": "newuser",
+      "password": "1234",
+      "id": 4
+    }
+  ],
+  "allBooks": [
+    {
+      "name": "Bappa Morya",
+      "image": "https://thumbor.forbes.com/thumbor/960x0/https%3A%2F%2Fblogs-images.forbes.com%2Fquickerbettertech%2Ffiles%2F2019%2F06%2FThe-Shadow-King.jpg",
+      "price": "3214",
+      "user": 1,
+      "id": 2
+    },
+    {
+      "name": "User 1 book",
+      "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
+      "price": "29991",
+      "user": 3,
+      "id": 3
+    },
+    {
+      "name": "SjaaWadd",
+      "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
+      "price": "1999",
+      "id": 6,
+      "user": 1
+    },
+    {
+      "name": "Newbook",
+      "image": "https://previews.123rf.com/images/eric1513/eric15130610/eric1513061000139/579240-closeup-picture-of-a-row-of-old-history-books.jpg",
+      "price": "444",
+      "user": 1,
+      "id": 7
+    }
+  ]
+}

@@ -1,0 +1,55 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: 15% 15% 15% 15% 15% 15%;
+    grid-gap: 25px;
+    padding: 2%;
+
+    .row {
+        grid-column-start: 1;
+        grid-column-end: 7;
+        text-align: right;
+    }
+
+    .card-size {
+        height: 200px;
+        max-width: 90%;
+        .inner-pos {
+            img {
+                object-fit: cover;
+            }
+            .book-name {
+                display: block;
+                text-align: left;
+                white-space: nowrap;
+                font-size: medium;
+                width: 175px;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            .button-bracket {
+                display: flex;
+                justify-content: space-between;
+                .button {
+                    padding: 1px 15px;
+                }
+                .btn-edit {
+                    color: black;
+                    &:hover {
+                        background-color: lightsalmon;
+                    }
+                }
+                .btn-del {
+                    color: black;
+                    &:hover {
+                        background-color: red;
+                    }
+                }
+            }
+        }
+    }
+}
+.not-data-msg {
+    color: rgb(230 114 60 / 1);
+    text-align: center;
+    text-decoration: underline;
+}

@@ -1,0 +1,18 @@
+<div class="toolbar" role="banner">
+    <h4 class="border marl"> Books Mania</h4>
+    <div class="spacer"></div>  
+
+    <a class="anchor-color" [routerLink]="['./books/all']" >Home</a>
+    <a class="anchor-color" [routerLink]="['./login']" *ngIf="!isLoggedIn">Login</a>
+    <a class="anchor-color" [routerLink]="['./register']" *ngIf="!isLoggedIn">Register</a>
+    <a class="anchor-color addRoute" (click)="goToRouteAdd('add')" *ngIf="isLoggedIn">Add Book +</a>
+    <a class="anchor-color addRoute" (click)="goToRouteAdd('list')" *ngIf="isLoggedIn">Your Books</a>
+    <a class="anchor-color addRoute" (click)="logoutSession()" *ngIf="isLoggedIn">Logout</a>
+
+    <label class="switch">
+        <input type="checkbox" id="togBtn" #ck (click)="toggleTheme(ck)">
+        <div class="slider round">
+            <span class="innerText light">Light</span><span class="innerText dark">Dark</span>
+        </div>
+    </label>
+</div>

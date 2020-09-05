@@ -1,0 +1,22 @@
+<div class="grid-container">
+    <div class="grid-item"></div>
+    <div class="m-auto card ">
+        <h2 class="text-center">{{isEdit?'Update':'Add New '}} Book</h2>
+        <hr>
+        <form class="main-form" [formGroup]="addBookForm">
+            <label for="bookName">Book Name</label>
+            <input type="text" id="bookName" placeholder="Book Name" formControlName="name">
+            <label for="bookUrl">Book Image Url</label>
+            <input type="text" id="bookUrl" placeholder="Image Url" formControlName="image">
+            <label for="bookPrice">Price</label>
+            <input type="text" id="bookPrice" placeholder="Book Price" formControlName="price">
+            <!-- <label for="lname">Password</label>
+            <input type="password" id="lname" placeholder="Password"> -->
+
+            <div class="text-center">
+                <button class="button btn-login" (click)="addBook()">{{isEdit?'Update':'Add'}} Book</button>
+            </div>
+        </form>
+    </div>
+
+</div>

@@ -1,0 +1,14 @@
+.grid-container {
+    display: grid;
+    grid-template-columns: auto 30% auto;
+    height: 85vh;
+    .main-form {
+        label {
+            font-weight: 500;
+        }
+        .btn-login {
+            background-color: black;
+            margin-top: 10px;
+        }
+    }
+}
