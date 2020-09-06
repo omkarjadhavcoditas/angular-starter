@@ -20,7 +20,11 @@ export class NavbarComponent implements OnInit {
   }
 
   public toggleTheme(val) {
-    console.log("val ", val.checked);
+    if (val) {
+      document.documentElement.style.setProperty('--theme-header', val.checked ? '#ffffff' : '#000000');
+      document.documentElement.style.setProperty('--theme-body', val.checked ? '#ffffff' : '#a9a9a9');
+      document.documentElement.style.setProperty('--theme-text', val.checked ? '#000000' : '#ffffff');
+    }
   }
   public goToRouteAdd(path: string): void {
     this.route.navigate([`../books/${path}`])

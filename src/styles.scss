@@ -1,6 +1,12 @@
 /* You can add global styles to this file, and also import other style files */
+:root {
+    --theme-body: #a2a2a2;
+    --theme-header: #000000;
+    --theme-text: #ffffff;
+}
 body {
     padding-top: 55px;
+    background: var(--theme-body);
 }
 input[type="text"],
 input[type="password"] {
@@ -43,4 +49,8 @@ input[type="password"] {
     font-size: 16px;
     margin: 4px 2px;
     cursor: pointer;
+}
+.toolbar {
+    background-color: var(--theme-pure);
+    color: var(--theme-body);
 }

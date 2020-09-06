@@ -9,7 +9,6 @@
     "src/polyfills.ts"
   ],
   "include": [
-    "src/**/*.d.ts",
-    "src/lit-element/card.ts"
+    "src/**/*.d.ts"
   ]
 }

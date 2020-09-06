@@ -4,9 +4,12 @@
   }
   .marl {
     margin-left: 10px;
+    color: var(--theme-text);
+    border: 1px solid var(--theme-text);
+    padding: 10px;
   }
   .anchor-color {
-    color: white;
+    color: var(--theme-text);
     margin-left: 2%;
     &.addRoute {
       cursor: pointer;
@@ -21,9 +24,10 @@
     height: 60px;
     display: flex;
     align-items: center;
-    background-color: black;
+    background-color: var(--theme-header);
     color: white;
     font-weight: 600;
+    border-bottom: 1px solid var(--theme-text);
   }
   .switch {
     position: relative;

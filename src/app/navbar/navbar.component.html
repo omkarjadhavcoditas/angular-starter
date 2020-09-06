@@ -1,8 +1,8 @@
 <div class="toolbar" role="banner">
-    <h4 class="border marl"> Books Mania</h4>
-    <div class="spacer"></div>  
+    <h4 class="marl"> Books Mania</h4>
+    <div class="spacer"></div>
 
-    <a class="anchor-color" [routerLink]="['./books/all']" >Home</a>
+    <a class="anchor-color" [routerLink]="['./books/all']">Home</a>
     <a class="anchor-color" [routerLink]="['./login']" *ngIf="!isLoggedIn">Login</a>
     <a class="anchor-color" [routerLink]="['./register']" *ngIf="!isLoggedIn">Register</a>
     <a class="anchor-color addRoute" (click)="goToRouteAdd('add')" *ngIf="isLoggedIn">Add Book +</a>

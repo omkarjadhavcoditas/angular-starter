@@ -5,7 +5,7 @@
             <img [src]="book.image?book.image: defaultCover" width="100%" height="98px">
             <hr>
             <b class="book-name">{{book.name}}</b>
-            <small class="text-muted">Rs. {{book.price}}/-</small>
+            <small>Rs. {{book.price}}/-</small>
             <hr *ngIf="isLoggedIn">
             <div class="button-bracket" *ngIf="isLoggedIn">
                 <button class="button btn-edit" *ngIf="loginUserId===book.user"
@@ -16,6 +16,6 @@
         </div>
     </card-web>
 </div>
-<div class="card" *ngIf="booksList.length<=0">
+<card-web *ngIf="booksList.length<=0">
     <h2 class="not-data-msg ">No Books Added To Show</h2>
-</div>
+</card-web>

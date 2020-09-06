@@ -7,7 +7,7 @@ export class Card extends LitElement {
         return css`
         .card {
             background-clip: border-box;
-            border: 1px solid rgba(0, 0, 0, 0.125);
+            border: 1px solid var(--theme-text);
             border-radius: 0.25rem;
             padding: 5%;
             box-shadow: 2px 2px 7px #888888;
