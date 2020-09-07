@@ -4,7 +4,11 @@ import { ListComponent } from './list/list.component';
 import { AddComponent } from './add/add.component';
 import { BooksRoutingModule } from './books-routing.module'
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import '../../lit-element/card.ts';
+import { Card } from './../../lit-element/card';
+import { StoreModule } from "@ngrx/store";
+import { BookReducer } from "./store/book-store.reducer";
+import { EffectsModule } from "@ngrx/effects";
+import { BooksEffect } from './store/book-store.effects';
 
 @NgModule({
   declarations: [ListComponent, AddComponent],
@@ -12,8 +16,11 @@ import '../../lit-element/card.ts';
     CommonModule,
     BooksRoutingModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    StoreModule.forFeature('books', BookReducer),
+    EffectsModule.forFeature([BooksEffect])
   ],
+  entryComponents: [Card],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })
 export class BooksModule { }

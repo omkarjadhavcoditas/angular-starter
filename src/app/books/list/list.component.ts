@@ -3,6 +3,8 @@ import { Book } from './../add/add.domain';
 import { AppService } from './../../app.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+import { Store } from '@ngrx/store';
+import * as BooksAction from '../store/book-store.actions';
 
 @Component({
   selector: 'app-list',
@@ -19,7 +21,8 @@ export class ListComponent implements OnInit {
     private router: Router,
     private appService: AppService,
     private booksService: BooksService,
-    private activatedRoute: ActivatedRoute
+    private activatedRoute: ActivatedRoute,
+    private store: Store<any>
   ) {
     this.booksList = [];
   }
@@ -46,14 +49,20 @@ export class ListComponent implements OnInit {
     })
   }
   private getAllBooks() {
-    this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {
-      this.booksList = allBooks;
-    })
+    this.store.dispatch(new BooksAction.LoadAllBooks());
+    this.store.subscribe(state => (this.booksList = state.books.allBooks)
+    )
+    // this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {
+    //   this.booksList = allBooks;
+    // })
   }
   private getLoginUserBooks() {
-    this.booksService.getLoginUserBooksList().subscribe((allBooks: Book[]) => {
-      this.booksList = allBooks;
-    })
+    this.store.dispatch(new BooksAction.LoadLoginBooks());
+    this.store.subscribe(state => (this.booksList = state.books.allBooks)
+    )
+    // this.booksService.getLoginUserBooksList().subscribe((allBooks: Book[]) => {
+    //   this.booksList = allBooks;
+    // })
   }
   public editBookOpt(bookId: number) {
     this.router.navigate([`../update/${bookId}`], { relativeTo: this.activatedRoute });

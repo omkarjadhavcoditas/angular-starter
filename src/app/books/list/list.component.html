@@ -1,20 +1,23 @@
 <div class="grid-container">
-    <card-web class="card-size" *ngFor="let book of booksList">
-        <!-- <div class="card card-size" *ngFor="let book of booksList"> -->
-        <div class="inner-pos">
-            <img [src]="book.image?book.image: defaultCover" width="100%" height="98px">
-            <hr>
-            <b class="book-name">{{book.name}}</b>
-            <small>Rs. {{book.price}}/-</small>
-            <hr *ngIf="isLoggedIn">
-            <div class="button-bracket" *ngIf="isLoggedIn">
-                <button class="button btn-edit" *ngIf="loginUserId===book.user"
-                    (click)="editBookOpt(book.id)">Edit</button>
-                <button class="button btn-del" *ngIf="loginUserId===book.user"
-                    (click)="deleteBook(book.id)">Delete</button>
+    <div *ngFor="let book of booksList">
+        <card-web class="card-size">
+            <!-- <div class="card card-size" *ngFor="let book of booksList"> -->
+            <div class="inner-pos">
+                <img [src]="book.image?book.image: defaultCover" width="100%" height="98px">
+                <hr>
+                <b class="book-name">{{book.name}}</b>
+                <small>Rs. {{book.price}}/-</small>
+                <hr *ngIf="loginUserId===book.user">
+                <div class="button-bracket" *ngIf="isLoggedIn">
+                    <button class="button btn-edit" *ngIf="loginUserId===book.user"
+                        (click)="editBookOpt(book.id)">Edit</button>
+                    <button class="button btn-del" *ngIf="loginUserId===book.user"
+                        (click)="deleteBook(book.id)">Delete</button>
+                </div>
             </div>
-        </div>
-    </card-web>
+        </card-web>
+    </div>
+
 </div>
 <card-web *ngIf="booksList.length<=0">
     <h2 class="not-data-msg ">No Books Added To Show</h2>
