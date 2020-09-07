@@ -10,7 +10,7 @@ export class Card extends LitElement {
             border: 1px solid var(--theme-text);
             border-radius: 0.25rem;
             padding: 5%;
-            box-shadow: 2px 2px 7px #888888;
+            box-shadow: var(--theme-box-shadow)
         }
         `;
     }

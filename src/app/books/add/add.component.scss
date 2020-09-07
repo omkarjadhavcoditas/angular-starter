@@ -12,3 +12,21 @@
         }
     }
 }
+
+@media only screen and (max-width: 1024px) {
+    .grid-container {
+        grid-template-columns: 30% 40% 30%;
+    }
+}
+
+@media only screen and (max-width: 768px) {
+    .grid-container {
+        grid-template-columns: 20% 60% 20%;
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .grid-container {
+        grid-template-columns: 10% 80% 10%;
+    }
+}

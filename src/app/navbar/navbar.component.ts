@@ -24,6 +24,7 @@ export class NavbarComponent implements OnInit {
       document.documentElement.style.setProperty('--theme-header', val.checked ? '#ffffff' : '#000000');
       document.documentElement.style.setProperty('--theme-body', val.checked ? '#ffffff' : '#a9a9a9');
       document.documentElement.style.setProperty('--theme-text', val.checked ? '#000000' : '#ffffff');
+      document.documentElement.style.setProperty('--theme-box-shadow', !val.checked ? 'rgb(212 212 212 / 98%) 2px 2px 7px' : 'rgb(136, 136, 136) 2px 2px 7px');
     }
   }
   public goToRouteAdd(path: string): void {

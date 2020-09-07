@@ -4,12 +4,6 @@
     grid-gap: 25px;
     padding: 2%;
 
-    .row {
-        grid-column-start: 1;
-        grid-column-end: 7;
-        text-align: right;
-    }
-
     .card-size {
         height: 200px;
         max-width: 90%;
@@ -53,4 +47,45 @@
     color: var(--theme-text);
     text-align: center;
     text-decoration: underline;
+}
+
+@media only screen and (max-width: 1024px) and (min-width: 850px) {
+    .grid-container {
+        grid-gap: 15px;
+        .inner-pos {
+            .book-name {
+                width: 100% !important;
+                font-size: small !important;
+            }
+        }
+        .button-bracket {
+            .button {
+                padding: 1px 10px !important;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 849px) and (min-width: 425px) {
+    .grid-container {
+        grid-template-columns: 30% 30% 30%;
+        .inner-pos {
+            .book-name {
+                width: 100% !important;
+                font-size: small !important;
+            }
+        }
+    }
+}
+
+@media only screen and (max-width: 425px) {
+    .grid-container {
+        grid-template-columns: 100%;
+        .inner-pos {
+            .book-name {
+                width: 100% !important;
+                font-size: small !important;
+            }
+        }
+    }
 }
