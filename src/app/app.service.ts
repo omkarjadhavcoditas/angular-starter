@@ -1,18 +1,23 @@
 import { AuthUser } from './register/register.domain';
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AppService {
   public loginTrigger: BehaviorSubject<boolean>;
+  private readonly serverUrl = 'http://localhost:3000/authUsers';
 
-  constructor() {
+  constructor(
+    private httpClient: HttpClient
+  ) {
     this.loginTrigger = new BehaviorSubject<boolean>(null);
   }
 
   public storeLoginUser(user: AuthUser): void {
+    // delete user[0].password;
     localStorage.setItem('loginUser', JSON.stringify(user));
     this.loginTrigger.next(true);
   }
@@ -28,5 +33,11 @@ export class AppService {
 
   public isUserLoggedIn(): boolean {
     return localStorage.length > 0;
+  }
+
+  public saveThemeForUser(isDarkTheme: boolean) {
+    const existingUser = this.getLoginUser();
+    existingUser.isLightTheme = isDarkTheme;
+    return this.httpClient.put(`${this.serverUrl}/${existingUser.id}`, existingUser)
   }
 }

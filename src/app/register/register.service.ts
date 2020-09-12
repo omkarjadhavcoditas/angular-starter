@@ -13,6 +13,7 @@ export class RegisterService {
   ) { }
 
   registerUser(userData: AuthUser): Observable<AuthUser> {
+    userData.isLightTheme = false;
     return this.httpClient.post<AuthUser>('http://localhost:3000/authUsers', userData)
   }
 }

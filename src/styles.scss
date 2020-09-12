@@ -3,7 +3,7 @@
     --theme-body: #a2a2a2;
     --theme-header: #000000;
     --theme-text: #ffffff;
-    --theme-box-shadow: rgb(212 212 212 / 98%) 2px 2px 7px
+    --theme-box-shadow: rgb(212 212 212 / 98%) 2px 2px 7px;
 }
 body {
     padding-top: 55px;
@@ -15,6 +15,11 @@ input[type="password"] {
     padding: 12px 20px;
     margin: 8px 0;
     box-sizing: border-box;
+    &.invalid,
+    &.ng-invalid.ng-touched {
+        outline-color: red;
+        border: 2px solid red;
+    }
 }
 .text-center {
     text-align: center;

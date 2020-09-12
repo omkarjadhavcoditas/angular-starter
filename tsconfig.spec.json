@@ -2,10 +2,15 @@
   "extends": "./tsconfig.base.json",
   "compilerOptions": {
     "outDir": "./out-tsc/spec",
+    "module": "commonjs",
+    "allowJs": true,
     "types": [
-      "jasmine",
-      "node"
-    ]
+      "node",
+      "jest",
+      "dom"
+    ],
+    "esModuleInterop": true,
+    "emitDecoratorMetadata": true
   },
   "files": [
     "src/test.ts",

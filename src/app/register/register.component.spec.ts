@@ -1,6 +1,8 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { RegisterComponent } from './register.component';
+import { Card } from '../../lit-element/card';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 describe('RegisterComponent', () => {
   let component: RegisterComponent;
@@ -8,9 +10,10 @@ describe('RegisterComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ RegisterComponent ]
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [RegisterComponent, Card]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {

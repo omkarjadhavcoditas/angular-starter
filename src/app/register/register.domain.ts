@@ -3,5 +3,6 @@ export interface AuthUser {
     lastName: string;
     userName: string;
     password: string;
-    id?:number;
+    id?: number;
+    isLightTheme?: boolean;
 }

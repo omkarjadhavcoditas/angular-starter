@@ -13,10 +13,10 @@
         },
         {
             "name": "AppState",
-            "id": "interface-AppState-6186a417f408fe08acba33fd9450443f-1",
+            "id": "interface-AppState-b4ed6ae80306bb59b02d6419fab93557-1",
             "file": "src/app/books/store/book-store.reducer.ts",
             "type": "interface",
-            "sourceCode": "import * as fromRoot from \"../../app-state/app-state\";\r\nimport * as BooksActions from \"./book-store.actions\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport interface AppState extends fromRoot.AppState {\r\n    allBooks: Book[]\r\n}\r\nconst inintalState: Book[] = [\r\n    {\r\n        name: \"Bappa Morya Storeww\",\r\n        image: \"https://images.mid-day.com/images/2018/sep/Ganpati-idols_l.jpg\",\r\n        price: \"499\",\r\n        id: 2,\r\n        user: 1\r\n    }\r\n]\r\n\r\n\r\nexport function BookReducer(state = inintalState, action: BooksActions.Actions): Book[] {\r\n    switch (action.type) {\r\n        case BooksActions.BooksActionType.LOAD_ALL_BOOKS: {\r\n            return { ...state };\r\n        }\r\n        default: {\r\n            return state;\r\n        }\r\n    }\r\n}",
+            "sourceCode": "import * as fromRoot from \"../../app-state/app-state\";\r\nimport * as BooksActions from \"./book-store.actions\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport interface AppState extends fromRoot.AppState {\r\n    allBooks: Book[],\r\n    error: string | null\r\n}\r\nconst inintalState = {\r\n    allBooks: [],\r\n    error: null\r\n}\r\n\r\nexport function BookReducer(state = inintalState, action: BooksActions.Actions): AppState {\r\n    switch (action.type) {\r\n        case BooksActions.BooksActionType.LOAD_ALL_BOOKS: {\r\n            return {\r\n                ...state\r\n            };\r\n        }\r\n        case BooksActions.BooksActionType.LOAD_ALL_BOOKS_SUCCESS: {\r\n            return {\r\n                ...state,\r\n                allBooks: action.payload\r\n            };\r\n        }\r\n        case BooksActions.BooksActionType.LOAD_ALL_BOOKS_FAIL: {\r\n            return {\r\n                ...state,\r\n                error: action.payload\r\n            };\r\n        }\r\n        case BooksActions.BooksActionType.LOAD_LOGIN_BOOKS: {\r\n            return {\r\n                ...state\r\n            };\r\n        }\r\n        case BooksActions.BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS: {\r\n            return {\r\n                ...state,\r\n                allBooks: action.payload\r\n            };\r\n        }\r\n        case BooksActions.BooksActionType.LOAD_LOGIN_BOOKS_FAIL: {\r\n            return {\r\n                ...state,\r\n                error: action.payload\r\n            };\r\n        }\r\n        default: {\r\n            return state;\r\n        }\r\n    }\r\n}",
             "properties": [
                 {
                     "name": "allBooks",
@@ -24,6 +24,13 @@
                     "optional": false,
                     "description": "",
                     "line": 6
+                },
+                {
+                    "name": "error",
+                    "type": "string | null",
+                    "optional": false,
+                    "description": "",
+                    "line": 7
                 }
             ],
             "indexSignatures": [],
@@ -262,7 +269,7 @@
         },
         {
             "name": "BooksEffect",
-            "id": "injectable-BooksEffect-8547ca870ab873d6778fb3566c2fcff3",
+            "id": "injectable-BooksEffect-035f3b6a9d2417abf690c730e9e000a5",
             "file": "src/app/books/store/book-store.effects.ts",
             "properties": [
                 {
@@ -278,11 +285,25 @@
                             "stringifiedArguments": ""
                         }
                     ]
+                },
+                {
+                    "name": "loadLoginUsersBooks$",
+                    "defaultValue": "this.actions$.pipe(\r\n        ofType<BooksAction.LoadLoginBooks>(BooksAction.BooksActionType.LOAD_LOGIN_BOOKS),\r\n        mergeMap((action: BooksAction.LoadLoginBooks) =>\r\n            this.bookservice.getLoginUserBooksList().pipe(\r\n                map((books: Book[]) =>\r\n                    new BooksAction.LoadLoginBooksSuccess(books)\r\n                ),\r\n                catchError(err => of(new BooksAction.LoadLoginBooksFail(err)))\r\n            )\r\n        )\r\n    )",
+                    "type": "Observable<Action>",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "decorators": [
+                        {
+                            "name": "Effect",
+                            "stringifiedArguments": ""
+                        }
+                    ]
                 }
             ],
             "methods": [],
             "description": "",
-            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { Actions, Effect, ofType } from \"@ngrx/effects\";\r\nimport { Action } from \"@ngrx/store\";\r\nimport { of, Observable } from \"rxjs\";\r\nimport { map, mergeMap, catchError } from \"rxjs/operators\";\r\nimport { BooksService } from './../books.service';\r\nimport { Book } from './../add/add.domain';\r\nimport * as BooksAction from \"./book-store.actions\";\r\n\r\n@Injectable()\r\nexport class BooksEffect {\r\n    constructor(\r\n        private actions$: Actions,\r\n        private bookservice: BooksService\r\n    ) { }\r\n\r\n    @Effect()\r\n    loadAllBooks$: Observable<Action> = this.actions$.pipe(\r\n        ofType<BooksAction.LoadAllBooks>(BooksAction.BooksActionType.LOAD_ALL_BOOKS),\r\n        mergeMap((action: BooksAction.LoadAllBooks) =>\r\n            this.bookservice.getAllBooksList().pipe(\r\n                map((books: Book[]) =>\r\n                    new BooksAction.LoadAllBooksSuccess(books)\r\n                ),\r\n                catchError(err => of(new BooksAction.LoadAllBooksFail(err)))\r\n            )\r\n        )\r\n    )\r\n}",
+            "sourceCode": "import { Injectable } from '@angular/core';\r\nimport { Actions, Effect, ofType } from \"@ngrx/effects\";\r\nimport { Action } from \"@ngrx/store\";\r\nimport { of, Observable } from \"rxjs\";\r\nimport { map, mergeMap, catchError } from \"rxjs/operators\";\r\nimport { BooksService } from './../books.service';\r\nimport { Book } from './../add/add.domain';\r\nimport * as BooksAction from \"./book-store.actions\";\r\n\r\n@Injectable()\r\nexport class BooksEffect {\r\n    constructor(\r\n        private actions$: Actions,\r\n        private bookservice: BooksService\r\n    ) { }\r\n\r\n    @Effect()\r\n    loadAllBooks$: Observable<Action> = this.actions$.pipe(\r\n        ofType<BooksAction.LoadAllBooks>(BooksAction.BooksActionType.LOAD_ALL_BOOKS),\r\n        mergeMap((action: BooksAction.LoadAllBooks) =>\r\n            this.bookservice.getAllBooksList().pipe(\r\n                map((books: Book[]) =>\r\n                    new BooksAction.LoadAllBooksSuccess(books)\r\n                ),\r\n                catchError(err => of(new BooksAction.LoadAllBooksFail(err)))\r\n            )\r\n        )\r\n    );\r\n\r\n    @Effect()\r\n    loadLoginUsersBooks$: Observable<Action> = this.actions$.pipe(\r\n        ofType<BooksAction.LoadLoginBooks>(BooksAction.BooksActionType.LOAD_LOGIN_BOOKS),\r\n        mergeMap((action: BooksAction.LoadLoginBooks) =>\r\n            this.bookservice.getLoginUserBooksList().pipe(\r\n                map((books: Book[]) =>\r\n                    new BooksAction.LoadLoginBooksSuccess(books)\r\n                ),\r\n                catchError(err => of(new BooksAction.LoadLoginBooksFail(err)))\r\n            )\r\n        )\r\n    )\r\n}",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -634,10 +655,10 @@
         },
         {
             "name": "Card",
-            "id": "class-Card-7f613a91558a9b321f3aa073cca017c4",
+            "id": "class-Card-0f4ddf5aedeff5663dfc0adc292e805c",
             "file": "src/lit-element/card.ts",
             "type": "class",
-            "sourceCode": "import { LitElement, css, html, customElement } from 'lit-element';\r\n\r\n@customElement('card-web')\r\nexport class Card extends LitElement {\r\n\r\n    static get styles() {\r\n        return css`\r\n        .card {\r\n            background-clip: border-box;\r\n            border: 1px solid var(--theme-text);\r\n            border-radius: 0.25rem;\r\n            padding: 5%;\r\n            box-shadow: 2px 2px 7px #888888;\r\n        }\r\n        `;\r\n    }\r\n\r\n    render() {\r\n        return html`\r\n        <div class=\"card\">\r\n            <slot></slot>\r\n        <div>\r\n        `;\r\n    }\r\n}",
+            "sourceCode": "import { LitElement, css, html, customElement } from 'lit-element';\r\n\r\n@customElement('card-web')\r\nexport class Card extends LitElement {\r\n\r\n    static get styles() {\r\n        return css`\r\n        .card {\r\n            background-clip: border-box;\r\n            border: 1px solid var(--theme-text);\r\n            border-radius: 0.25rem;\r\n            padding: 5%;\r\n            box-shadow: var(--theme-box-shadow)\r\n        }\r\n        `;\r\n    }\r\n\r\n    render() {\r\n        return html`\r\n        <div class=\"card\">\r\n            <slot></slot>\r\n        <div>\r\n        `;\r\n    }\r\n}",
             "properties": [],
             "methods": [
                 {
@@ -725,17 +746,21 @@
         },
         {
             "name": "LoadAllBooks",
-            "id": "class-LoadAllBooks-5359bfd8a69e121e52fedd561939eccd",
+            "id": "class-LoadAllBooks-6a6a77b21e6894ee41acc722c0b4c33b",
             "file": "src/app/books/store/book-store.actions.ts",
             "type": "class",
-            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions = LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail;",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
             "properties": [
                 {
                     "name": "type",
-                    "type": "BooksActionType.LOAD_ALL_BOOKS",
+                    "defaultValue": "BooksActionType.LOAD_ALL_BOOKS",
+                    "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 11
+                    "line": 15,
+                    "modifierKind": [
+                        132
+                    ]
                 }
             ],
             "methods": [],
@@ -750,10 +775,10 @@
         },
         {
             "name": "LoadAllBooksFail",
-            "id": "class-LoadAllBooksFail-5359bfd8a69e121e52fedd561939eccd",
+            "id": "class-LoadAllBooksFail-6a6a77b21e6894ee41acc722c0b4c33b",
             "file": "src/app/books/store/book-store.actions.ts",
             "type": "class",
-            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions = LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail;",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -763,7 +788,7 @@
                         "type": "string"
                     }
                 ],
-                "line": 18,
+                "line": 22,
                 "jsdoctags": [
                     {
                         "name": "payload",
@@ -780,17 +805,21 @@
                     "type": "string",
                     "optional": false,
                     "description": "",
-                    "line": 19,
+                    "line": 23,
                     "modifierKind": [
                         114
                     ]
                 },
                 {
                     "name": "type",
-                    "type": "BooksActionType.LOAD_ALL_BOOKS_FAIL",
+                    "defaultValue": "BooksActionType.LOAD_ALL_BOOKS_FAIL",
+                    "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 18
+                    "line": 22,
+                    "modifierKind": [
+                        132
+                    ]
                 }
             ],
             "methods": [],
@@ -805,10 +834,10 @@
         },
         {
             "name": "LoadAllBooksSuccess",
-            "id": "class-LoadAllBooksSuccess-5359bfd8a69e121e52fedd561939eccd",
+            "id": "class-LoadAllBooksSuccess-6a6a77b21e6894ee41acc722c0b4c33b",
             "file": "src/app/books/store/book-store.actions.ts",
             "type": "class",
-            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    type: BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions = LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail;",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
             "constructorObj": {
                 "name": "constructor",
                 "description": "",
@@ -818,7 +847,7 @@
                         "type": "Book[]"
                     }
                 ],
-                "line": 14,
+                "line": 18,
                 "jsdoctags": [
                     {
                         "name": "payload",
@@ -835,17 +864,168 @@
                     "type": "Book[]",
                     "optional": false,
                     "description": "",
-                    "line": 15,
+                    "line": 19,
                     "modifierKind": [
                         114
                     ]
                 },
                 {
                     "name": "type",
-                    "type": "BooksActionType.LOAD_ALL_BOOKS_SUCCESS",
+                    "defaultValue": "BooksActionType.LOAD_ALL_BOOKS_SUCCESS",
+                    "type": "",
                     "optional": false,
                     "description": "",
-                    "line": 14
+                    "line": 18,
+                    "modifierKind": [
+                        132
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "implements": [
+                "Action"
+            ]
+        },
+        {
+            "name": "LoadLoginBooks",
+            "id": "class-LoadLoginBooks-6a6a77b21e6894ee41acc722c0b4c33b",
+            "file": "src/app/books/store/book-store.actions.ts",
+            "type": "class",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
+            "properties": [
+                {
+                    "name": "type",
+                    "defaultValue": "BooksActionType.LOAD_LOGIN_BOOKS",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 27,
+                    "modifierKind": [
+                        132
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "implements": [
+                "Action"
+            ]
+        },
+        {
+            "name": "LoadLoginBooksFail",
+            "id": "class-LoadLoginBooksFail-6a6a77b21e6894ee41acc722c0b4c33b",
+            "file": "src/app/books/store/book-store.actions.ts",
+            "type": "class",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "payload",
+                        "type": "string"
+                    }
+                ],
+                "line": 34,
+                "jsdoctags": [
+                    {
+                        "name": "payload",
+                        "type": "string",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "payload",
+                    "type": "string",
+                    "optional": false,
+                    "description": "",
+                    "line": 35,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "BooksActionType.LOAD_LOGIN_BOOKS_FAIL",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 34,
+                    "modifierKind": [
+                        132
+                    ]
+                }
+            ],
+            "methods": [],
+            "indexSignatures": [],
+            "inputsClass": [],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "implements": [
+                "Action"
+            ]
+        },
+        {
+            "name": "LoadLoginBooksSuccess",
+            "id": "class-LoadLoginBooksSuccess-6a6a77b21e6894ee41acc722c0b4c33b",
+            "file": "src/app/books/store/book-store.actions.ts",
+            "type": "class",
+            "sourceCode": "import { Action } from \"@ngrx/store\";\r\nimport { Book } from './../add/add.domain';\r\n\r\nexport enum BooksActionType {\r\n    LOAD_ALL_BOOKS = \"[BOOKS] Load All Books\",\r\n    LOAD_ALL_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_ALL_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n\r\n    LOAD_LOGIN_BOOKS = \"[BOOKS] Load Login Books\",\r\n    LOAD_LOGIN_BOOKS_SUCCESS = \"[BOOKS] Load Books Success\",\r\n    LOAD_LOGIN_BOOKS_FAIL = \"[BOOKS] Load Books Fail\",\r\n}\r\n\r\nexport class LoadAllBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS;\r\n}\r\nexport class LoadAllBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadAllBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_ALL_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport class LoadLoginBooks implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS;\r\n}\r\nexport class LoadLoginBooksSuccess implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS;\r\n    constructor(public payload: Book[]) { }\r\n}\r\nexport class LoadLoginBooksFail implements Action {\r\n    readonly type = BooksActionType.LOAD_LOGIN_BOOKS_FAIL;\r\n    constructor(public payload: string) { }\r\n}\r\n\r\nexport type Actions =\r\n    LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |\r\n    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "payload",
+                        "type": "Book[]"
+                    }
+                ],
+                "line": 30,
+                "jsdoctags": [
+                    {
+                        "name": "payload",
+                        "type": "Book[]",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            },
+            "properties": [
+                {
+                    "name": "payload",
+                    "type": "Book[]",
+                    "optional": false,
+                    "description": "",
+                    "line": 31,
+                    "modifierKind": [
+                        114
+                    ]
+                },
+                {
+                    "name": "type",
+                    "defaultValue": "BooksActionType.LOAD_LOGIN_BOOKS_SUCCESS",
+                    "type": "",
+                    "optional": false,
+                    "description": "",
+                    "line": 30,
+                    "modifierKind": [
+                        132
+                    ]
                 }
             ],
             "methods": [],
@@ -859,11 +1039,104 @@
             ]
         }
     ],
-    "directives": [],
+    "directives": [
+        {
+            "name": "CheckErrorDirective",
+            "id": "directive-CheckErrorDirective-cba48ddcb75c4448cba3342e285ed2fc",
+            "file": "src/app/directives/check-error.directive.ts",
+            "type": "directive",
+            "description": "",
+            "sourceCode": "import { Directive, ElementRef, OnChanges, SimpleChanges, Input, Renderer2 } from '@angular/core';\n\n@Directive({\n  selector: '[checkValidity]'\n})\nexport class CheckErrorDirective implements OnChanges {\n  @Input() public isValid: boolean = true;\n  private readonly spanErrorEle: HTMLSpanElement;\n\n  constructor(\n    private el: ElementRef,\n    private renderer: Renderer2\n  ) { }\n\n  ngOnChanges(changes: SimpleChanges) {\n    if (changes && changes.isValid.previousValue !== undefined) {\n      changes.isValid.currentValue ? this.renderer.removeClass(this.el.nativeElement, 'invalid') : this.renderer.addClass(this.el.nativeElement, 'invalid')\n    }\n  }\n}\n",
+            "selector": "[checkValidity]",
+            "providers": [],
+            "inputsClass": [
+                {
+                    "name": "isValid",
+                    "defaultValue": "true",
+                    "line": 7,
+                    "type": "boolean"
+                }
+            ],
+            "outputsClass": [],
+            "hostBindings": [],
+            "hostListeners": [],
+            "propertiesClass": [
+                {
+                    "name": "spanErrorEle",
+                    "type": "HTMLSpanElement",
+                    "optional": false,
+                    "description": "",
+                    "line": 8,
+                    "modifierKind": [
+                        112,
+                        132
+                    ]
+                }
+            ],
+            "methodsClass": [
+                {
+                    "name": "ngOnChanges",
+                    "args": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges"
+                        }
+                    ],
+                    "optional": false,
+                    "returnType": "void",
+                    "typeParameters": [],
+                    "line": 15,
+                    "jsdoctags": [
+                        {
+                            "name": "changes",
+                            "type": "SimpleChanges",
+                            "tagName": {
+                                "text": "param"
+                            }
+                        }
+                    ]
+                }
+            ],
+            "implements": [
+                "OnChanges"
+            ],
+            "constructorObj": {
+                "name": "constructor",
+                "description": "",
+                "args": [
+                    {
+                        "name": "el",
+                        "type": "ElementRef"
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2"
+                    }
+                ],
+                "line": 8,
+                "jsdoctags": [
+                    {
+                        "name": "el",
+                        "type": "ElementRef",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    },
+                    {
+                        "name": "renderer",
+                        "type": "Renderer2",
+                        "tagName": {
+                            "text": "param"
+                        }
+                    }
+                ]
+            }
+        }
+    ],
     "components": [
         {
             "name": "AddComponent",
-            "id": "component-AddComponent-5bf8b2a7c1b597671be0f763b7e991b6",
+            "id": "component-AddComponent-cefe73c99a9dccf224c5218fe31c0b21",
             "file": "src/app/books/add/add.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1008,11 +1281,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { Book } from './add.domain';\r\nimport { BooksService } from './../books.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormGroup, FormBuilder, Validators } from '@angular/forms';\r\nimport { ActivatedRoute, Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-add',\r\n  templateUrl: './add.component.html',\r\n  styleUrls: ['./add.component.scss']\r\n})\r\nexport class AddComponent implements OnInit {\r\n  public addBookForm: FormGroup;\r\n  public isEdit: boolean;\r\n  private bookIdForEdit: number;\r\n\r\n  constructor(\r\n    private router: Router,\r\n    private fb: FormBuilder,\r\n    private bookService: BooksService,\r\n    private activatedRoute: ActivatedRoute,\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.addBookForm = this.createForm();\r\n    this.checkUrlLoad();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      name: [null, Validators.compose([Validators.required])],\r\n      image: [null, Validators.compose([Validators.required])],\r\n      price: [null, Validators.compose([Validators.required])]\r\n    })\r\n  }\r\n  public addBook() {\r\n    if (this.addBookForm.valid) {\r\n      this.isEdit ? this.updateBook() : this.addNewBook();\r\n    } else {\r\n      alert(\"Fill form properly!\");\r\n    }\r\n  }\r\n\r\n  private addNewBook() {\r\n    this.bookService.addBook(this.addBookForm.value).subscribe((res: Book) => {\r\n      if (res) {\r\n        alert(\"Book Added Successfully\");\r\n        this.addBookForm.reset();\r\n        this.router.navigate(['../list'], { relativeTo: this.activatedRoute })\r\n      }\r\n    });\r\n  }\r\n  private updateBook() {\r\n    let bookFinal = { ...this.addBookForm.value, id: this.bookIdForEdit }\r\n    console.log(\"bookFinal \", bookFinal);\r\n    this.bookService.updateBook(bookFinal).subscribe((res: Book) => {\r\n      if (res) {\r\n        alert(\"Book Updated Successfully\");\r\n        this.addBookForm.reset();\r\n        this.router.navigate(['../../list'], { relativeTo: this.activatedRoute })\r\n      }\r\n    });\r\n  }\r\n  private checkUrlLoad() {\r\n    this.activatedRoute.params.subscribe(urlParam => {\r\n      if (urlParam && urlParam.id) {\r\n        this.isEdit = true;\r\n        this.bookIdForEdit = urlParam.id;\r\n        this.getBookForUpdate(urlParam.id);\r\n      } else {\r\n        this.isEdit = false;\r\n      }\r\n    })\r\n  }\r\n\r\n  private getBookForUpdate(bookId: number) {\r\n    this.bookService.getBookById(bookId).subscribe((book: Book) => {\r\n      console.log(\"book \", book);\r\n      if (book) {\r\n        this.addBookForm.patchValue(book);\r\n      }\r\n    })\r\n  }\r\n}",
+            "sourceCode": "import { Book } from './add.domain';\r\nimport { BooksService } from './../books.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormGroup, FormBuilder, Validators } from '@angular/forms';\r\nimport { ActivatedRoute, Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-add',\r\n  templateUrl: './add.component.html',\r\n  styleUrls: ['./add.component.scss']\r\n})\r\nexport class AddComponent implements OnInit {\r\n  public addBookForm: FormGroup;\r\n  public isEdit: boolean;\r\n  private bookIdForEdit: number;\r\n\r\n  constructor(\r\n    private router: Router,\r\n    private fb: FormBuilder,\r\n    private bookService: BooksService,\r\n    private activatedRoute: ActivatedRoute,\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.addBookForm = this.createForm();\r\n    this.checkUrlLoad();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      name: [null, Validators.compose([Validators.required, Validators.minLength(4)])],\r\n      image: [null, Validators.compose([Validators.required, Validators.pattern(/([a-z\\-_0-9\\/\\:\\.]*\\.(jpg|jpeg|png|gif))/i)])],\r\n      price: [null, Validators.compose([Validators.required, Validators.pattern('^[1-9]([0-9]+)?(.[0-9]+)?')])]\r\n    })\r\n  }\r\n  public addBook() {\r\n    if (this.addBookForm.valid) {\r\n      this.isEdit ? this.updateBook() : this.addNewBook();\r\n    } else {\r\n      alert(\"Fill form properly!\");\r\n    }\r\n  }\r\n\r\n  private addNewBook() {\r\n    this.bookService.addBook(this.addBookForm.value).subscribe((res: Book) => {\r\n      if (res) {\r\n        alert(\"Book Added Successfully\");\r\n        this.addBookForm.reset();\r\n        this.router.navigate(['../list'], { relativeTo: this.activatedRoute })\r\n      }\r\n    });\r\n  }\r\n  private updateBook() {\r\n    let bookFinal = { ...this.addBookForm.value, id: this.bookIdForEdit }\r\n    console.log(\"bookFinal \", bookFinal);\r\n    this.bookService.updateBook(bookFinal).subscribe((res: Book) => {\r\n      if (res) {\r\n        alert(\"Book Updated Successfully\");\r\n        this.addBookForm.reset();\r\n        this.router.navigate(['../../list'], { relativeTo: this.activatedRoute })\r\n      }\r\n    });\r\n  }\r\n  private checkUrlLoad() {\r\n    this.activatedRoute.params.subscribe(urlParam => {\r\n      if (urlParam && urlParam.id) {\r\n        this.isEdit = true;\r\n        this.bookIdForEdit = urlParam.id;\r\n        this.getBookForUpdate(urlParam.id);\r\n      } else {\r\n        this.isEdit = false;\r\n      }\r\n    })\r\n  }\r\n\r\n  private getBookForUpdate(bookId: number) {\r\n    this.bookService.getBookById(bookId).subscribe((book: Book) => {\r\n      console.log(\"book \", book);\r\n      if (book) {\r\n        this.addBookForm.patchValue(book);\r\n      }\r\n    })\r\n  }\r\n}",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n",
+                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 1024px) {\r\n    .grid-container {\r\n        grid-template-columns: 30% 40% 30%;\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 768px) {\r\n    .grid-container {\r\n        grid-template-columns: 20% 60% 20%;\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 425px) {\r\n    .grid-container {\r\n        grid-template-columns: 10% 80% 10%;\r\n    }\r\n}",
                     "styleUrl": "./add.component.scss"
                 }
             ],
@@ -1073,7 +1346,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n\r\n        <h2 class=\"text-center\">{{isEdit?'Update':'Add New '}} Book</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"addBookForm\">\r\n            <label for=\"bookName\">Book Name</label>\r\n            <input type=\"text\" id=\"bookName\" placeholder=\"Book Name\" formControlName=\"name\">\r\n            <label for=\"bookUrl\">Book Image Url</label>\r\n            <input type=\"text\" id=\"bookUrl\" placeholder=\"Image Url\" formControlName=\"image\">\r\n            <label for=\"bookPrice\">Price</label>\r\n            <input type=\"text\" id=\"bookPrice\" placeholder=\"Book Price\" formControlName=\"price\">\r\n            <!-- <label for=\"lname\">Password</label>\r\n            <input type=\"password\" id=\"lname\" placeholder=\"Password\"> -->\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"addBook()\">{{isEdit?'Update':'Add'}} Book</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
+            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n\r\n        <h2 class=\"text-center\">{{isEdit?'Update':'Add New '}} Book</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"addBookForm\">\r\n            <label for=\"bookName\">Book Name</label>\r\n            <input type=\"text\" id=\"bookName\" placeholder=\"Book Name\" formControlName=\"name\" checkValidity\r\n                [isValid]=\"addBookForm.get('name').valid\">\r\n            <label for=\"bookUrl\">Book Image Url</label>\r\n            <input type=\"text\" id=\"bookUrl\" placeholder=\"Image Url\" formControlName=\"image\" checkValidity\r\n                [isValid]=\"addBookForm.get('image').valid\">\r\n            <label for=\"bookPrice\">Price</label>\r\n            <input type=\"text\" id=\"bookPrice\" placeholder=\"Book Price\" formControlName=\"price\" checkValidity\r\n                [isValid]=\"addBookForm.get('price').valid\">\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"addBook()\">{{isEdit?'Update':'Add'}} Book</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
         },
         {
             "name": "AppComponent",
@@ -1267,7 +1540,7 @@
         },
         {
             "name": "ListComponent",
-            "id": "component-ListComponent-97259323aeb799a66a28c191dc4d141b",
+            "id": "component-ListComponent-88b4ff5df42f47ef7fdd8b0df7d1c22d",
             "file": "src/app/books/list/list.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1363,7 +1636,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 68,
+                    "line": 70,
                     "modifierKind": [
                         114
                     ],
@@ -1388,7 +1661,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 65,
+                    "line": 67,
                     "modifierKind": [
                         114
                     ],
@@ -1419,7 +1692,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 60,
+                    "line": 59,
                     "modifierKind": [
                         112
                     ]
@@ -1438,11 +1711,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { BooksService } from './../books.service';\r\nimport { Book } from './../add/add.domain';\r\nimport { AppService } from './../../app.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Router, ActivatedRoute, UrlSegment } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport * as BooksAction from '../store/book-store.actions';\r\n\r\n@Component({\r\n  selector: 'app-list',\r\n  templateUrl: './list.component.html',\r\n  styleUrls: ['./list.component.scss']\r\n})\r\nexport class ListComponent implements OnInit {\r\n  public readonly defaultCover = 'https://www.mockupworld.co/wp-content/uploads/dynamic/2016/06/free-hardcover-square-book-mockup1-536x0-c-default.jpg';\r\n  public isLoggedIn: boolean;\r\n  public booksList: Book[];\r\n  public loginUserId: number;\r\n\r\n  constructor(\r\n    private router: Router,\r\n    private appService: AppService,\r\n    private booksService: BooksService,\r\n    private activatedRoute: ActivatedRoute,\r\n    private store: Store<any>\r\n  ) {\r\n    this.booksList = [];\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.checkLoginStatus();\r\n    this.checkUrlLoad();\r\n  }\r\n  private checkUrlLoad() {\r\n    this.activatedRoute.url.subscribe((urlParam: UrlSegment[]) => {\r\n      if (urlParam && urlParam.length > 0) {\r\n        urlParam.length > 0 && urlParam[0].path === 'list' ?\r\n          this.getLoginUserBooks() : this.getAllBooks();\r\n      }\r\n    })\r\n  }\r\n  private checkLoginStatus() {\r\n    this.isLoggedIn = this.appService.isUserLoggedIn();\r\n    this.isLoggedIn ? this.loginUserId = this.appService.getLoginUser().id : '';\r\n    this.appService.loginTrigger.subscribe((log: boolean) => {\r\n      if (log !== null) {\r\n        this.isLoggedIn = log;\r\n      }\r\n    })\r\n  }\r\n  private getAllBooks() {\r\n    this.store.dispatch(new BooksAction.LoadAllBooks());\r\n    this.store.subscribe(state => {\r\n      this.booksList = state.books;\r\n    })\r\n    // this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {\r\n    //   this.booksList = allBooks;\r\n    // })\r\n  }\r\n  private getLoginUserBooks() {\r\n    this.booksService.getLoginUserBooksList().subscribe((allBooks: Book[]) => {\r\n      this.booksList = allBooks;\r\n    })\r\n  }\r\n  public editBookOpt(bookId: number) {\r\n    this.router.navigate([`../update/${bookId}`], { relativeTo: this.activatedRoute });\r\n  }\r\n  public deleteBook(bookId: number) {\r\n    this.booksService.deleteBookById(bookId).subscribe((result: object) => {\r\n      if (result) {\r\n        this.booksList.splice(this.booksList.findIndex(ele => ele.id === bookId), 1);\r\n        alert('Book Deleted From Library!');\r\n      }\r\n    })\r\n  }\r\n}\r\n",
+            "sourceCode": "import { BooksService } from './../books.service';\r\nimport { Book } from './../add/add.domain';\r\nimport { AppService } from './../../app.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Router, ActivatedRoute, UrlSegment } from '@angular/router';\r\nimport { Store } from '@ngrx/store';\r\nimport * as BooksAction from '../store/book-store.actions';\r\n\r\n@Component({\r\n  selector: 'app-list',\r\n  templateUrl: './list.component.html',\r\n  styleUrls: ['./list.component.scss']\r\n})\r\nexport class ListComponent implements OnInit {\r\n  public readonly defaultCover = 'https://www.mockupworld.co/wp-content/uploads/dynamic/2016/06/free-hardcover-square-book-mockup1-536x0-c-default.jpg';\r\n  public isLoggedIn: boolean;\r\n  public booksList: Book[];\r\n  public loginUserId: number;\r\n\r\n  constructor(\r\n    private router: Router,\r\n    private appService: AppService,\r\n    private booksService: BooksService,\r\n    private activatedRoute: ActivatedRoute,\r\n    private store: Store<any>\r\n  ) {\r\n    this.booksList = [];\r\n  }\r\n\r\n  ngOnInit(): void {\r\n    this.checkLoginStatus();\r\n    this.checkUrlLoad();\r\n  }\r\n  private checkUrlLoad() {\r\n    this.activatedRoute.url.subscribe((urlParam: UrlSegment[]) => {\r\n      if (urlParam && urlParam.length > 0) {\r\n        urlParam.length > 0 && urlParam[0].path === 'list' ?\r\n          this.getLoginUserBooks() : this.getAllBooks();\r\n      }\r\n    })\r\n  }\r\n  private checkLoginStatus() {\r\n    this.isLoggedIn = this.appService.isUserLoggedIn();\r\n    this.isLoggedIn ? this.loginUserId = this.appService.getLoginUser().id : '';\r\n    this.appService.loginTrigger.subscribe((log: boolean) => {\r\n      if (log !== null) {\r\n        this.isLoggedIn = log;\r\n      }\r\n    })\r\n  }\r\n  private getAllBooks() {\r\n    this.store.dispatch(new BooksAction.LoadAllBooks());\r\n    this.store.subscribe(state => (this.booksList = state.books.allBooks)\r\n    )\r\n    // this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {\r\n    //   this.booksList = allBooks;\r\n    // })\r\n  }\r\n  private getLoginUserBooks() {\r\n    this.store.dispatch(new BooksAction.LoadLoginBooks());\r\n    this.store.subscribe(state => (this.booksList = state.books.allBooks)\r\n    )\r\n    // this.booksService.getLoginUserBooksList().subscribe((allBooks: Book[]) => {\r\n    //   this.booksList = allBooks;\r\n    // })\r\n  }\r\n  public editBookOpt(bookId: number) {\r\n    this.router.navigate([`../update/${bookId}`], { relativeTo: this.activatedRoute });\r\n  }\r\n  public deleteBook(bookId: number) {\r\n    this.booksService.deleteBookById(bookId).subscribe((result: object) => {\r\n      if (result) {\r\n        this.booksList.splice(this.booksList.findIndex(ele => ele.id === bookId), 1);\r\n        alert('Book Deleted From Library!');\r\n      }\r\n    })\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: 15% 15% 15% 15% 15% 15%;\r\n    grid-gap: 25px;\r\n    padding: 2%;\r\n\r\n    .row {\r\n        grid-column-start: 1;\r\n        grid-column-end: 7;\r\n        text-align: right;\r\n    }\r\n\r\n    .card-size {\r\n        height: 200px;\r\n        max-width: 90%;\r\n        .inner-pos {\r\n            color: var(--theme-text);\r\n            img {\r\n                object-fit: cover;\r\n            }\r\n            .book-name {\r\n                display: block;\r\n                text-align: left;\r\n                white-space: nowrap;\r\n                font-size: medium;\r\n                width: 160px;\r\n                overflow: hidden;\r\n                text-overflow: ellipsis;\r\n            }\r\n            .button-bracket {\r\n                display: flex;\r\n                justify-content: space-between;\r\n                .button {\r\n                    padding: 1px 15px;\r\n                }\r\n                .btn-edit {\r\n                    color: black;\r\n                    &:hover {\r\n                        background-color: lightsalmon;\r\n                    }\r\n                }\r\n                .btn-del {\r\n                    color: black;\r\n                    &:hover {\r\n                        background-color: red;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n.not-data-msg {\r\n    color: var(--theme-text);\r\n    text-align: center;\r\n    text-decoration: underline;\r\n}\r\n",
+                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: 15% 15% 15% 15% 15% 15%;\r\n    grid-gap: 25px;\r\n    padding: 2%;\r\n\r\n    .card-size {\r\n        height: 200px;\r\n        max-width: 90%;\r\n        .inner-pos {\r\n            color: var(--theme-text);\r\n            img {\r\n                object-fit: cover;\r\n            }\r\n            .book-name {\r\n                display: block;\r\n                text-align: left;\r\n                white-space: nowrap;\r\n                font-size: medium;\r\n                width: 160px;\r\n                overflow: hidden;\r\n                text-overflow: ellipsis;\r\n            }\r\n            .button-bracket {\r\n                display: flex;\r\n                justify-content: space-between;\r\n                .button {\r\n                    padding: 1px 15px;\r\n                }\r\n                .btn-edit {\r\n                    color: black;\r\n                    &:hover {\r\n                        background-color: springgreen;\r\n                    }\r\n                }\r\n                .btn-del {\r\n                    color: black;\r\n                    &:hover {\r\n                        background-color: red;\r\n                    }\r\n                }\r\n            }\r\n        }\r\n    }\r\n}\r\n.not-data-msg {\r\n    color: var(--theme-text);\r\n    text-align: center;\r\n    text-decoration: underline;\r\n}\r\n\r\n@media only screen and (max-width: 1024px) and (min-width: 850px) {\r\n    .grid-container {\r\n        grid-gap: 15px;\r\n        .inner-pos {\r\n            .book-name {\r\n                width: 100% !important;\r\n                font-size: small !important;\r\n            }\r\n        }\r\n        .button-bracket {\r\n            .button {\r\n                padding: 1px 10px !important;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 849px) and (min-width: 425px) {\r\n    .grid-container {\r\n        grid-template-columns: 30% 30% 30%;\r\n        .inner-pos {\r\n            .book-name {\r\n                width: 100% !important;\r\n                font-size: small !important;\r\n            }\r\n        }\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 425px) {\r\n    .grid-container {\r\n        grid-template-columns: 100%;\r\n        .inner-pos {\r\n            .book-name {\r\n                width: 100% !important;\r\n                font-size: small !important;\r\n            }\r\n        }\r\n    }\r\n}\r\n",
                     "styleUrl": "./list.component.scss"
                 }
             ],
@@ -1514,11 +1787,11 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"grid-container\">\r\n    <card-web class=\"card-size\" *ngFor=\"let book of booksList\">\r\n        <!-- <div class=\"card card-size\" *ngFor=\"let book of booksList\"> -->\r\n        <div class=\"inner-pos\">\r\n            <img [src]=\"book.image?book.image: defaultCover\" width=\"100%\" height=\"98px\">\r\n            <hr>\r\n            <b class=\"book-name\">{{book.name}}</b>\r\n            <small>Rs. {{book.price}}/-</small>\r\n            <hr *ngIf=\"isLoggedIn\">\r\n            <div class=\"button-bracket\" *ngIf=\"isLoggedIn\">\r\n                <button class=\"button btn-edit\" *ngIf=\"loginUserId===book.user\"\r\n                    (click)=\"editBookOpt(book.id)\">Edit</button>\r\n                <button class=\"button btn-del\" *ngIf=\"loginUserId===book.user\"\r\n                    (click)=\"deleteBook(book.id)\">Delete</button>\r\n            </div>\r\n        </div>\r\n    </card-web>\r\n</div>\r\n<card-web *ngIf=\"booksList.length<=0\">\r\n    <h2 class=\"not-data-msg \">No Books Added To Show</h2>\r\n</card-web>"
+            "templateData": "<div class=\"grid-container\">\r\n    <div *ngFor=\"let book of booksList\">\r\n        <card-web class=\"card-size\">\r\n            <!-- <div class=\"card card-size\" *ngFor=\"let book of booksList\"> -->\r\n            <div class=\"inner-pos\">\r\n                <img [src]=\"book.image?book.image: defaultCover\" width=\"100%\" height=\"98px\">\r\n                <hr>\r\n                <b class=\"book-name\">{{book.name}}</b>\r\n                <small>Rs. {{book.price}}/-</small>\r\n                <hr *ngIf=\"loginUserId===book.user\">\r\n                <div class=\"button-bracket\" *ngIf=\"isLoggedIn\">\r\n                    <button class=\"button btn-edit\" *ngIf=\"loginUserId===book.user\"\r\n                        (click)=\"editBookOpt(book.id)\">Edit</button>\r\n                    <button class=\"button btn-del\" *ngIf=\"loginUserId===book.user\"\r\n                        (click)=\"deleteBook(book.id)\">Delete</button>\r\n                </div>\r\n            </div>\r\n        </card-web>\r\n    </div>\r\n\r\n</div>\r\n<card-web *ngIf=\"booksList.length<=0\">\r\n    <h2 class=\"not-data-msg \">No Books Added To Show</h2>\r\n</card-web>"
         },
         {
             "name": "LoginComponent",
-            "id": "component-LoginComponent-177f93bb9b2b03493d5c7b277359b23c",
+            "id": "component-LoginComponent-a7c9163e013533fe14e3834a632fc42d",
             "file": "src/app/login/login.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1582,11 +1855,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { AppService } from './../app.service';\r\nimport { AuthUser } from './../register/register.domain';\r\nimport { LoginService } from './login.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Validators, FormGroup, FormBuilder } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-login',\r\n  templateUrl: './login.component.html',\r\n  styleUrls: ['./login.component.scss']\r\n})\r\nexport class LoginComponent implements OnInit {\r\n\r\n  public loginForm: FormGroup;\r\n\r\n  constructor(\r\n    private fb: FormBuilder,\r\n    private router: Router,\r\n    private appService: AppService,\r\n    private loginService: LoginService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.loginForm = this.createForm();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      userName: [null, Validators.compose([Validators.required])],\r\n      password: [null, Validators.compose([Validators.required])]\r\n    })\r\n  }\r\n\r\n  checkUserExistance() {\r\n    console.log(\"this.loginForm.value \", this.loginForm.value);\r\n    if (this.loginForm.valid) {\r\n      this.loginService.checkLoginUser(this.loginForm.value).subscribe((res: AuthUser[]) => {\r\n        console.log(\"res \", res);\r\n        if (res && res.length > 0) {\r\n          alert('Logged In Successfully');\r\n          delete res[0].password;\r\n          this.appService.storeLoginUser(res[0]);\r\n          this.loginForm.reset();\r\n          this.router.navigate(['./books/list']);\r\n          return;\r\n        }\r\n        alert('Username or password invalid');\r\n      }, err => alert(err))\r\n    }\r\n  }\r\n}\r\n",
+            "sourceCode": "import { AppService } from './../app.service';\r\nimport { AuthUser } from './../register/register.domain';\r\nimport { LoginService } from './login.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Validators, FormGroup, FormBuilder } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-login',\r\n  templateUrl: './login.component.html',\r\n  styleUrls: ['./login.component.scss']\r\n})\r\nexport class LoginComponent implements OnInit {\r\n\r\n  public loginForm: FormGroup;\r\n\r\n  constructor(\r\n    private fb: FormBuilder,\r\n    private router: Router,\r\n    private appService: AppService,\r\n    private loginService: LoginService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.loginForm = this.createForm();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      userName: [null, Validators.compose([Validators.required, Validators.minLength(4)])],\r\n      password: [null, Validators.compose([Validators.required, Validators.minLength(4)])]\r\n    })\r\n  }\r\n\r\n  checkUserExistance() {\r\n    if (this.loginForm.valid) {\r\n      this.loginService.checkLoginUser(this.loginForm.value).subscribe((res: AuthUser[]) => {\r\n        if (res && res.length > 0) {\r\n          alert('Logged In Successfully');\r\n          delete res[0].password;\r\n          this.appService.storeLoginUser(res[0]);\r\n          this.loginForm.reset();\r\n          this.router.navigate(['./books/list']);\r\n          return;\r\n        }\r\n        alert('Username or password invalid');\r\n      }, err => alert(err))\r\n    }\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n",
+                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 768px) {\r\n    .grid-container {\r\n        grid-template-columns: 30% 40% 30%;\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 425px) {\r\n    .grid-container {\r\n        grid-template-columns: 10% 80% 10%;\r\n    }\r\n}",
                     "styleUrl": "./login.component.scss"
                 }
             ],
@@ -1647,11 +1920,11 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n        <h2 class=\"text-center\">Login</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"loginForm\">\r\n            <label for=\"username\">Username</label>\r\n            <input type=\"text\" id=\"username\" placeholder=\"Username\" formControlName=\"userName\">\r\n            <label for=\"password\">Password</label>\r\n            <input type=\"password\" id=\"password\" placeholder=\"Password\" formControlName=\"password\">\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"checkUserExistance()\">Login</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
+            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n        <h2 class=\"text-center\">Login</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"loginForm\">\r\n            <label for=\"username\">Username</label>\r\n            <input type=\"text\" id=\"username\" placeholder=\"Username\" formControlName=\"userName\" checkValidity\r\n                [isValid]=\"loginForm.get('userName').valid\">\r\n            <label for=\"password\">Password</label>\r\n            <input type=\"password\" id=\"password\" placeholder=\"Password\" formControlName=\"password\" checkValidity\r\n                [isValid]=\"loginForm.get('password').valid\">\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"checkUserExistance()\">Login</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
         },
         {
             "name": "NavbarComponent",
-            "id": "component-NavbarComponent-90fbfe50b601ca99d202890d45fc66ce",
+            "id": "component-NavbarComponent-38f7f2c45d47d0705d6b44f81969ef52",
             "file": "src/app/navbar/navbar.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1688,7 +1961,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 32,
+                    "line": 33,
                     "modifierKind": [
                         112
                     ]
@@ -1704,7 +1977,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 29,
+                    "line": 30,
                     "modifierKind": [
                         114
                     ],
@@ -1724,7 +1997,7 @@
                     "optional": false,
                     "returnType": "void",
                     "typeParameters": [],
-                    "line": 39
+                    "line": 40
                 },
                 {
                     "name": "ngOnInit",
@@ -1765,11 +2038,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { AppService } from './../app.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-navbar',\r\n  templateUrl: './navbar.component.html',\r\n  styleUrls: ['./navbar.component.scss']\r\n})\r\nexport class NavbarComponent implements OnInit {\r\n  public isLoggedIn: boolean;\r\n\r\n  constructor(\r\n    private route: Router,\r\n    private appService: AppService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.checkLoginStatus();\r\n  }\r\n\r\n  public toggleTheme(val) {\r\n    if (val) {\r\n      document.documentElement.style.setProperty('--theme-header', val.checked ? '#ffffff' : '#000000');\r\n      document.documentElement.style.setProperty('--theme-body', val.checked ? '#ffffff' : '#a9a9a9');\r\n      document.documentElement.style.setProperty('--theme-text', val.checked ? '#000000' : '#ffffff');\r\n    }\r\n  }\r\n  public goToRouteAdd(path: string): void {\r\n    this.route.navigate([`../books/${path}`])\r\n  }\r\n  private checkLoginStatus() {\r\n    this.appService.loginTrigger.subscribe((status: boolean) => {\r\n      console.log(\"status \", status);\r\n      this.isLoggedIn = status;\r\n    });\r\n    this.isLoggedIn = this.appService.isUserLoggedIn();\r\n  }\r\n  logoutSession() {\r\n    this.appService.logoutCurrentUser();\r\n    this.route.navigate(['../books/all'])\r\n  }\r\n}\r\n",
+            "sourceCode": "import { AppService } from './../app.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-navbar',\r\n  templateUrl: './navbar.component.html',\r\n  styleUrls: ['./navbar.component.scss']\r\n})\r\nexport class NavbarComponent implements OnInit {\r\n  public isLoggedIn: boolean;\r\n\r\n  constructor(\r\n    private route: Router,\r\n    private appService: AppService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.checkLoginStatus();\r\n  }\r\n\r\n  public toggleTheme(val) {\r\n    if (val) {\r\n      document.documentElement.style.setProperty('--theme-header', val.checked ? '#ffffff' : '#000000');\r\n      document.documentElement.style.setProperty('--theme-body', val.checked ? '#ffffff' : '#a9a9a9');\r\n      document.documentElement.style.setProperty('--theme-text', val.checked ? '#000000' : '#ffffff');\r\n      document.documentElement.style.setProperty('--theme-box-shadow', !val.checked ? 'rgb(212 212 212 / 98%) 2px 2px 7px' : 'rgb(136, 136, 136) 2px 2px 7px');\r\n    }\r\n  }\r\n  public goToRouteAdd(path: string): void {\r\n    this.route.navigate([`../books/${path}`])\r\n  }\r\n  private checkLoginStatus() {\r\n    this.appService.loginTrigger.subscribe((status: boolean) => {\r\n      console.log(\"status \", status);\r\n      this.isLoggedIn = status;\r\n    });\r\n    this.isLoggedIn = this.appService.isUserLoggedIn();\r\n  }\r\n  logoutSession() {\r\n    this.appService.logoutCurrentUser();\r\n    this.route.navigate(['../books/all'])\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ":host {\r\n  .spacer {\r\n    flex: 1;\r\n  }\r\n  .marl {\r\n    margin-left: 10px;\r\n    color: var(--theme-text);\r\n    border: 1px solid var(--theme-text);\r\n    padding: 10px;\r\n  }\r\n  .anchor-color {\r\n    color: var(--theme-text);\r\n    margin-left: 2%;\r\n    &.addRoute {\r\n      cursor: pointer;\r\n      text-decoration: underline;\r\n    }\r\n  }\r\n  .toolbar {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    height: 60px;\r\n    display: flex;\r\n    align-items: center;\r\n    background-color: var(--theme-header);\r\n    color: white;\r\n    font-weight: 600;\r\n    border-bottom: 1px solid var(--theme-text);\r\n  }\r\n  .switch {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 60px;\r\n    height: 27px;\r\n    margin: 0 10px;\r\n  }\r\n\r\n  .switch input {\r\n    display: none;\r\n  }\r\n\r\n  .slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: black;\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s;\r\n  }\r\n\r\n  .slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 26px;\r\n    width: 26px;\r\n    left: 1px;\r\n    bottom: 1px;\r\n    background-color: lightgray;\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s;\r\n  }\r\n\r\n  input:checked + .slider {\r\n    background-color: white;\r\n  }\r\n\r\n  input:focus + .slider {\r\n    box-shadow: 0 0 1px #2196f3;\r\n  }\r\n\r\n  input:checked + .slider:before {\r\n    -webkit-transform: translateX(32px);\r\n    -ms-transform: translateX(32px);\r\n    transform: translateX(32px);\r\n  }\r\n\r\n  .innerText {\r\n    position: absolute;\r\n    transform: translate(-50%, -50%);\r\n    top: 50%;\r\n    font-size: 10px;\r\n    font-family: Verdana, sans-serif;\r\n    &.dark {\r\n      left: 70%;\r\n      color: white;\r\n    }\r\n    &.light {\r\n      display: none;\r\n      left: 30%;\r\n      color: black;\r\n    }\r\n  }\r\n\r\n  input:checked + .slider .light {\r\n    display: block;\r\n  }\r\n\r\n  input:checked + .slider .dark {\r\n    display: none;\r\n  }\r\n\r\n  /* Rounded sliders */\r\n  .slider.round {\r\n    border-radius: 34px;\r\n  }\r\n\r\n  .slider.round:before {\r\n    border-radius: 50%;\r\n  }\r\n}\r\n",
+                    "data": ":host {\r\n  .spacer {\r\n    flex: 1;\r\n  }\r\n  .marl {\r\n    margin-left: 10px;\r\n    color: var(--theme-text);\r\n    border: 1px solid var(--theme-text);\r\n    padding: 10px;\r\n  }\r\n  .anchor-color {\r\n    color: var(--theme-text);\r\n    margin-left: 2%;\r\n    &.addRoute {\r\n      cursor: pointer;\r\n      text-decoration: underline;\r\n    }\r\n  }\r\n  .toolbar {\r\n    position: absolute;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    height: 60px;\r\n    display: flex;\r\n    align-items: center;\r\n    background-color: var(--theme-header);\r\n    color: white;\r\n    font-weight: 600;\r\n    border-bottom: 1px solid var(--theme-text);\r\n  }\r\n  .switch {\r\n    position: relative;\r\n    display: inline-block;\r\n    width: 60px;\r\n    height: 27px;\r\n    margin: 0 10px;\r\n  }\r\n\r\n  .switch input {\r\n    display: none;\r\n  }\r\n\r\n  .slider {\r\n    position: absolute;\r\n    cursor: pointer;\r\n    top: 0;\r\n    left: 0;\r\n    right: 0;\r\n    bottom: 0;\r\n    background-color: black;\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s;\r\n  }\r\n\r\n  .slider:before {\r\n    position: absolute;\r\n    content: \"\";\r\n    height: 26px;\r\n    width: 26px;\r\n    left: 1px;\r\n    bottom: 1px;\r\n    background-color: lightgray;\r\n    -webkit-transition: 0.4s;\r\n    transition: 0.4s;\r\n  }\r\n\r\n  input:checked + .slider {\r\n    background-color: white;\r\n  }\r\n\r\n  input:focus + .slider {\r\n    box-shadow: 0 0 1px #2196f3;\r\n  }\r\n\r\n  input:checked + .slider:before {\r\n    -webkit-transform: translateX(32px);\r\n    -ms-transform: translateX(32px);\r\n    transform: translateX(32px);\r\n  }\r\n\r\n  .innerText {\r\n    position: absolute;\r\n    transform: translate(-50%, -50%);\r\n    top: 50%;\r\n    font-size: 10px;\r\n    font-family: Verdana, sans-serif;\r\n    &.dark {\r\n      left: 70%;\r\n      color: white;\r\n    }\r\n    &.light {\r\n      display: none;\r\n      left: 30%;\r\n      color: black;\r\n    }\r\n  }\r\n\r\n  input:checked + .slider .light {\r\n    display: block;\r\n  }\r\n\r\n  input:checked + .slider .dark {\r\n    display: none;\r\n  }\r\n\r\n  /* Rounded sliders */\r\n  .slider.round {\r\n    border-radius: 34px;\r\n  }\r\n\r\n  .slider.round:before {\r\n    border-radius: 50%;\r\n  }\r\n}\r\n\r\n@media only screen and (max-width: 375px) {\r\n  .toolbar {\r\n    font-size: x-small !important;\r\n  }\r\n}\r\n",
                     "styleUrl": "./navbar.component.scss"
                 }
             ],
@@ -1874,7 +2147,7 @@
         },
         {
             "name": "RegisterComponent",
-            "id": "component-RegisterComponent-8509966ddd8f09fad4e1222a39c2d34a",
+            "id": "component-RegisterComponent-94486c8457b2d737a6d98dda988d0b50",
             "file": "src/app/register/register.component.ts",
             "encapsulation": [],
             "entryComponents": [],
@@ -1938,11 +2211,11 @@
             "description": "",
             "rawdescription": "",
             "type": "component",
-            "sourceCode": "import { AuthUser } from './register.domain';\r\nimport { RegisterService } from './register.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormBuilder, Validators, FormGroup } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-register',\r\n  templateUrl: './register.component.html',\r\n  styleUrls: ['./register.component.scss']\r\n})\r\nexport class RegisterComponent implements OnInit {\r\n  public registerForm: FormGroup;\r\n\r\n  constructor(\r\n    private fb: FormBuilder,\r\n    private router: Router,\r\n    private registerService: RegisterService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.registerForm = this.createForm();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      firstName: [null, Validators.compose([Validators.required])],\r\n      lastName: [null, Validators.compose([Validators.required])],\r\n      userName: [null, Validators.compose([Validators.required])],\r\n      password: [null, Validators.compose([Validators.required])]\r\n    })\r\n  }\r\n  registerUser() {\r\n    if (this.registerForm.valid) {\r\n      this.registerService.registerUser(this.registerForm.value).subscribe((res:AuthUser) => {\r\n        if (res) {\r\n          alert('User Registered Successfully');\r\n          this.registerForm.reset();\r\n          this.router.navigate(['./login']);\r\n        }\r\n      }, err => alert(err))\r\n    }\r\n    console.log(\"this.registerForm.value \", this.registerForm.value);\r\n  }\r\n}\r\n",
+            "sourceCode": "import { AuthUser } from './register.domain';\r\nimport { RegisterService } from './register.service';\r\nimport { Component, OnInit } from '@angular/core';\r\nimport { FormBuilder, Validators, FormGroup } from '@angular/forms';\r\nimport { Router } from '@angular/router';\r\n\r\n@Component({\r\n  selector: 'app-register',\r\n  templateUrl: './register.component.html',\r\n  styleUrls: ['./register.component.scss']\r\n})\r\nexport class RegisterComponent implements OnInit {\r\n  public registerForm: FormGroup;\r\n\r\n  constructor(\r\n    private fb: FormBuilder,\r\n    private router: Router,\r\n    private registerService: RegisterService\r\n  ) { }\r\n\r\n  ngOnInit(): void {\r\n    this.registerForm = this.createForm();\r\n  }\r\n\r\n  private createForm() {\r\n    return this.fb.group({\r\n      firstName: [null, Validators.compose([Validators.required])],\r\n      lastName: [null, Validators.compose([Validators.required])],\r\n      userName: [null, Validators.compose([Validators.required, Validators.minLength(4)])],\r\n      password: [null, Validators.compose([Validators.required, Validators.minLength(4)])]\r\n    })\r\n  }\r\n  registerUser() {\r\n    if (this.registerForm.valid) {\r\n      this.registerService.registerUser(this.registerForm.value).subscribe((res: AuthUser) => {\r\n        if (res) {\r\n          alert('User Registered Successfully');\r\n          this.registerForm.reset();\r\n          this.router.navigate(['./login']);\r\n        }\r\n      }, err => alert(err))\r\n    } else {\r\n      alert('Fiil form properly')\r\n    }\r\n    console.log(\"this.registerForm.value \", this.registerForm.value);\r\n  }\r\n}\r\n",
             "assetsDirs": [],
             "styleUrlsData": [
                 {
-                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n",
+                    "data": ".grid-container {\r\n    display: grid;\r\n    grid-template-columns: auto 30% auto;\r\n    height: 85vh;\r\n    .main-form {\r\n        label {\r\n            font-weight: 500;\r\n        }\r\n        .btn-login {\r\n            background-color: black;\r\n            margin-top: 10px;\r\n        }\r\n    }\r\n}\r\n@media only screen and (max-width: 768px) {\r\n    .grid-container {\r\n        grid-template-columns: 30% 40% 30%;\r\n    }\r\n}\r\n\r\n@media only screen and (max-width: 425px) {\r\n    .grid-container {\r\n        grid-template-columns: 10% 80% 10%;\r\n    }\r\n}\r\n",
                     "styleUrl": "./register.component.scss"
                 }
             ],
@@ -1992,7 +2265,7 @@
             "implements": [
                 "OnInit"
             ],
-            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n        <h2 class=\"text-center\">Registration</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"registerForm\">\r\n            <label for=\"fname\">First Name</label>\r\n            <input type=\"text\" id=\"fname\" placeholder=\"First Name\" formControlName=\"firstName\">\r\n            <label for=\"lname\">Last Name</label>\r\n            <input type=\"text\" id=\"lname\" placeholder=\"Last Name\" formControlName=\"lastName\">\r\n            <label for=\"uname\">Username</label>\r\n            <input type=\"text\" id=\"uname\" placeholder=\"New Username\" formControlName=\"userName\">\r\n            <label for=\"pass\">Password</label>\r\n            <input type=\"password\" id=\"pass\" placeholder=\"Password\" formControlName=\"password\">\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"registerUser()\">Register</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
+            "templateData": "<div class=\"grid-container\">\r\n    <div class=\"grid-item\"></div>\r\n    <card-web class=\"m-auto\">\r\n        <h2 class=\"text-center\">Registration</h2>\r\n        <hr>\r\n        <form class=\"main-form\" [formGroup]=\"registerForm\">\r\n            <label for=\"fname\">First Name</label>\r\n            <input type=\"text\" id=\"fname\" placeholder=\"First Name\" formControlName=\"firstName\" checkValidity\r\n                [isValid]=\"registerForm.get('firstName').valid\">\r\n            <label for=\"lname\">Last Name</label>\r\n            <input type=\"text\" id=\"lname\" placeholder=\"Last Name\" formControlName=\"lastName\" checkValidity\r\n                [isValid]=\"registerForm.get('lastName').valid\">\r\n            <label for=\"uname\">Username</label>\r\n            <input type=\"text\" id=\"uname\" placeholder=\"New Username\" formControlName=\"userName\" checkValidity\r\n                [isValid]=\"registerForm.get('userName').valid\">\r\n            <label for=\"pass\">Password</label>\r\n            <input type=\"password\" id=\"pass\" placeholder=\"Password\" formControlName=\"password\" checkValidity\r\n                [isValid]=\"registerForm.get('password').valid\">\r\n\r\n            <div class=\"text-center\">\r\n                <button class=\"button btn-login\" (click)=\"registerUser()\">Register</button>\r\n            </div>\r\n        </form>\r\n    </card-web>\r\n\r\n</div>"
         }
     ],
     "modules": [
@@ -2025,6 +2298,9 @@
                     "elements": [
                         {
                             "name": "AppRoutingModule"
+                        },
+                        {
+                            "name": "SharedModule"
                         }
                     ]
                 },
@@ -2080,11 +2356,7 @@
             "children": [
                 {
                     "type": "providers",
-                    "elements": [
-                        {
-                            "name": "BooksEffect"
-                        }
-                    ]
+                    "elements": []
                 },
                 {
                     "type": "declarations",
@@ -2102,6 +2374,9 @@
                     "elements": [
                         {
                             "name": "BooksRoutingModule"
+                        },
+                        {
+                            "name": "SharedModule"
                         }
                     ]
                 },
@@ -2147,18 +2422,47 @@
                     "elements": []
                 }
             ]
+        },
+        {
+            "name": "SharedModule",
+            "children": [
+                {
+                    "type": "providers",
+                    "elements": []
+                },
+                {
+                    "type": "declarations",
+                    "elements": [
+                        {
+                            "name": "CheckErrorDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "imports",
+                    "elements": []
+                },
+                {
+                    "type": "exports",
+                    "elements": [
+                        {
+                            "name": "CheckErrorDirective"
+                        }
+                    ]
+                },
+                {
+                    "type": "bootstrap",
+                    "elements": []
+                },
+                {
+                    "type": "classes",
+                    "elements": []
+                }
+            ]
         }
     ],
     "miscellaneous": {
         "variables": [
-            {
-                "name": "context",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/test.ts",
-                "type": "",
-                "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-            },
             {
                 "name": "environment",
                 "ctype": "miscellaneous",
@@ -2180,8 +2484,8 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/app/books/store/book-store.reducer.ts",
-                "type": "Book[]",
-                "defaultValue": "[\r\n    {\r\n        name: \"Bappa Morya Storeww\",\r\n        image: \"https://images.mid-day.com/images/2018/sep/Ganpati-idols_l.jpg\",\r\n        price: \"499\",\r\n        id: 2,\r\n        user: 1\r\n    }\r\n]"
+                "type": "object",
+                "defaultValue": "{\r\n    allBooks: [],\r\n    error: null\r\n}"
             },
             {
                 "name": "Large",
@@ -2208,18 +2512,10 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "LoggedOut",
+                "name": "LoginScreen",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/stories/Header.stories.ts",
-                "type": "",
-                "defaultValue": "Template.bind({})"
-            },
-            {
-                "name": "LoggedOut",
-                "ctype": "miscellaneous",
-                "subtype": "variable",
-                "file": "src/stories/Page.stories.ts",
+                "file": "src/stories/Login.stories.ts",
                 "type": "",
                 "defaultValue": "Template.bind({})"
             },
@@ -2232,11 +2528,12 @@
                 "defaultValue": "Template.bind({})"
             },
             {
-                "name": "require",
+                "name": "Registration",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
-                "file": "src/test.ts",
-                "type": "literal type"
+                "file": "src/stories/Page.stories.ts",
+                "type": "",
+                "defaultValue": "Template.bind({\n  component: RegisterComponent\n})"
             },
             {
                 "name": "Secondary",
@@ -2267,16 +2564,24 @@
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Header.stories.ts",
-                "type": "Story<Header>",
-                "defaultValue": "(args: Header) => ({\n  component: Header,\n  props: args,\n})"
+                "type": "Story<NavbarComponent>",
+                "defaultValue": "(args: NavbarComponent) => ({\n  component: NavbarComponent,\n  props: args,\n})"
             },
             {
                 "name": "Template",
                 "ctype": "miscellaneous",
                 "subtype": "variable",
                 "file": "src/stories/Page.stories.ts",
-                "type": "Story<Page>",
-                "defaultValue": "(args: Page) => ({\n  component: Page,\n  props: args,\n})"
+                "type": "Story<LoginComponent>",
+                "defaultValue": "(args: LoginComponent) => ({\n  component: LoginComponent,\n  props: args,\n})"
+            },
+            {
+                "name": "Template",
+                "ctype": "miscellaneous",
+                "subtype": "variable",
+                "file": "src/stories/Login.stories.ts",
+                "type": "Story<LoginComponent>",
+                "defaultValue": "(args: LoginComponent) => ({\r\n    component: LoginComponent,\r\n    props: args,\r\n})"
             }
         ],
         "functions": [
@@ -2295,7 +2600,7 @@
                         "name": "action"
                     }
                 ],
-                "returnType": "Book[]",
+                "returnType": "AppState",
                 "jsdoctags": [
                     {
                         "name": "state",
@@ -2326,7 +2631,7 @@
                 "name": "Actions",
                 "ctype": "miscellaneous",
                 "subtype": "typealias",
-                "rawtype": "LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail",
+                "rawtype": "LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail | LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
                 "file": "src/app/books/store/book-store.actions.ts",
                 "description": "",
                 "kind": 168
@@ -2347,6 +2652,18 @@
                     {
                         "name": "LOAD_ALL_BOOKS_FAIL",
                         "value": "[BOOKS] Load Books Fail"
+                    },
+                    {
+                        "name": "LOAD_LOGIN_BOOKS",
+                        "value": "[BOOKS] Load Login Books"
+                    },
+                    {
+                        "name": "LOAD_LOGIN_BOOKS_SUCCESS",
+                        "value": "[BOOKS] Load Books Success"
+                    },
+                    {
+                        "name": "LOAD_LOGIN_BOOKS_FAIL",
+                        "value": "[BOOKS] Load Books Fail"
                     }
                 ],
                 "ctype": "miscellaneous",
@@ -2356,23 +2673,6 @@
             }
         ],
         "groupedVariables": {
-            "src/test.ts": [
-                {
-                    "name": "context",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "type": "",
-                    "defaultValue": "require.context('./', true, /\\.spec\\.ts$/)"
-                },
-                {
-                    "name": "require",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/test.ts",
-                    "type": "literal type"
-                }
-            ],
             "src/environments/environment.prod.ts": [
                 {
                     "name": "environment",
@@ -2399,8 +2699,8 @@
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/app/books/store/book-store.reducer.ts",
-                    "type": "Book[]",
-                    "defaultValue": "[\r\n    {\r\n        name: \"Bappa Morya Storeww\",\r\n        image: \"https://images.mid-day.com/images/2018/sep/Ganpati-idols_l.jpg\",\r\n        price: \"499\",\r\n        id: 2,\r\n        user: 1\r\n    }\r\n]"
+                    "type": "object",
+                    "defaultValue": "{\r\n    allBooks: [],\r\n    error: null\r\n}"
                 }
             ],
             "src/stories/Button.stories.ts": [
@@ -2455,20 +2755,12 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "LoggedOut",
-                    "ctype": "miscellaneous",
-                    "subtype": "variable",
-                    "file": "src/stories/Header.stories.ts",
-                    "type": "",
-                    "defaultValue": "Template.bind({})"
-                },
-                {
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/Header.stories.ts",
-                    "type": "Story<Header>",
-                    "defaultValue": "(args: Header) => ({\n  component: Header,\n  props: args,\n})"
+                    "type": "Story<NavbarComponent>",
+                    "defaultValue": "(args: NavbarComponent) => ({\n  component: NavbarComponent,\n  props: args,\n})"
                 }
             ],
             "src/stories/Page.stories.ts": [
@@ -2481,10 +2773,28 @@
                     "defaultValue": "Template.bind({})"
                 },
                 {
-                    "name": "LoggedOut",
+                    "name": "Registration",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
                     "file": "src/stories/Page.stories.ts",
+                    "type": "",
+                    "defaultValue": "Template.bind({\n  component: RegisterComponent\n})"
+                },
+                {
+                    "name": "Template",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Page.stories.ts",
+                    "type": "Story<LoginComponent>",
+                    "defaultValue": "(args: LoginComponent) => ({\n  component: LoginComponent,\n  props: args,\n})"
+                }
+            ],
+            "src/stories/Login.stories.ts": [
+                {
+                    "name": "LoginScreen",
+                    "ctype": "miscellaneous",
+                    "subtype": "variable",
+                    "file": "src/stories/Login.stories.ts",
                     "type": "",
                     "defaultValue": "Template.bind({})"
                 },
@@ -2492,9 +2802,9 @@
                     "name": "Template",
                     "ctype": "miscellaneous",
                     "subtype": "variable",
-                    "file": "src/stories/Page.stories.ts",
-                    "type": "Story<Page>",
-                    "defaultValue": "(args: Page) => ({\n  component: Page,\n  props: args,\n})"
+                    "file": "src/stories/Login.stories.ts",
+                    "type": "Story<LoginComponent>",
+                    "defaultValue": "(args: LoginComponent) => ({\r\n    component: LoginComponent,\r\n    props: args,\r\n})"
                 }
             ]
         },
@@ -2515,7 +2825,7 @@
                             "name": "action"
                         }
                     ],
-                    "returnType": "Book[]",
+                    "returnType": "AppState",
                     "jsdoctags": [
                         {
                             "name": "state",
@@ -2560,6 +2870,18 @@
                         {
                             "name": "LOAD_ALL_BOOKS_FAIL",
                             "value": "[BOOKS] Load Books Fail"
+                        },
+                        {
+                            "name": "LOAD_LOGIN_BOOKS",
+                            "value": "[BOOKS] Load Login Books"
+                        },
+                        {
+                            "name": "LOAD_LOGIN_BOOKS_SUCCESS",
+                            "value": "[BOOKS] Load Books Success"
+                        },
+                        {
+                            "name": "LOAD_LOGIN_BOOKS_FAIL",
+                            "value": "[BOOKS] Load Books Fail"
                         }
                     ],
                     "ctype": "miscellaneous",
@@ -2575,7 +2897,7 @@
                     "name": "Actions",
                     "ctype": "miscellaneous",
                     "subtype": "typealias",
-                    "rawtype": "LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail",
+                    "rawtype": "LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail | LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail",
                     "file": "src/app/books/store/book-store.actions.ts",
                     "description": "",
                     "kind": 168
@@ -2688,12 +3010,39 @@
                 "status": "low"
             },
             {
+                "filePath": "src/app/books/store/book-store.actions.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "LoadLoginBooks",
+                "coveragePercent": 0,
+                "coverageCount": "0/2",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/books/store/book-store.actions.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "LoadLoginBooksFail",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/books/store/book-store.actions.ts",
+                "type": "class",
+                "linktype": "classe",
+                "name": "LoadLoginBooksSuccess",
+                "coveragePercent": 0,
+                "coverageCount": "0/4",
+                "status": "low"
+            },
+            {
                 "filePath": "src/app/books/store/book-store.effects.ts",
                 "type": "injectable",
                 "linktype": "injectable",
                 "name": "BooksEffect",
                 "coveragePercent": 0,
-                "coverageCount": "0/3",
+                "coverageCount": "0/4",
                 "status": "low"
             },
             {
@@ -2702,7 +3051,7 @@
                 "linktype": "interface",
                 "name": "AppState",
                 "coveragePercent": 0,
-                "coverageCount": "0/2",
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -2722,6 +3071,33 @@
                 "name": "inintalState",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/directives/check-error.directive.ts",
+                "type": "directive",
+                "linktype": "directive",
+                "name": "CheckErrorDirective",
+                "coveragePercent": 0,
+                "coverageCount": "0/5",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/guards/login.guard.ts",
+                "type": "guard",
+                "linktype": "guard",
+                "name": "LoginGuard",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
+                "status": "low"
+            },
+            {
+                "filePath": "src/app/guards/logout.guard.ts",
+                "type": "guard",
+                "linktype": "guard",
+                "name": "LogoutGuard",
+                "coveragePercent": 0,
+                "coverageCount": "0/3",
                 "status": "low"
             },
             {
@@ -2908,13 +3284,23 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "LoggedOut",
+                "name": "Template",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
             },
             {
-                "filePath": "src/stories/Header.stories.ts",
+                "filePath": "src/stories/Login.stories.ts",
+                "type": "variable",
+                "linktype": "miscellaneous",
+                "linksubtype": "variable",
+                "name": "LoginScreen",
+                "coveragePercent": 0,
+                "coverageCount": "0/1",
+                "status": "low"
+            },
+            {
+                "filePath": "src/stories/Login.stories.ts",
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
@@ -2938,7 +3324,7 @@
                 "type": "variable",
                 "linktype": "miscellaneous",
                 "linksubtype": "variable",
-                "name": "LoggedOut",
+                "name": "Registration",
                 "coveragePercent": 0,
                 "coverageCount": "0/1",
                 "status": "low"
@@ -2978,26 +3364,6 @@
                 "name": "PageComponent",
                 "coveragePercent": 0,
                 "coverageCount": "0/5",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "context",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
-                "status": "low"
-            },
-            {
-                "filePath": "src/test.ts",
-                "type": "variable",
-                "linktype": "miscellaneous",
-                "linksubtype": "variable",
-                "name": "require",
-                "coveragePercent": 0,
-                "coverageCount": "0/1",
                 "status": "low"
             }
         ]

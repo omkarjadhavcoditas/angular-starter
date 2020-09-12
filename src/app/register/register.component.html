@@ -5,13 +5,17 @@
         <hr>
         <form class="main-form" [formGroup]="registerForm">
             <label for="fname">First Name</label>
-            <input type="text" id="fname" placeholder="First Name" formControlName="firstName">
+            <input type="text" id="fname" placeholder="First Name" formControlName="firstName" checkValidity
+                [isValid]="registerForm.get('firstName').valid">
             <label for="lname">Last Name</label>
-            <input type="text" id="lname" placeholder="Last Name" formControlName="lastName">
+            <input type="text" id="lname" placeholder="Last Name" formControlName="lastName" checkValidity
+                [isValid]="registerForm.get('lastName').valid">
             <label for="uname">Username</label>
-            <input type="text" id="uname" placeholder="New Username" formControlName="userName">
+            <input type="text" id="uname" placeholder="New Username" formControlName="userName" checkValidity
+                [isValid]="registerForm.get('userName').valid">
             <label for="pass">Password</label>
-            <input type="password" id="pass" placeholder="Password" formControlName="password">
+            <input type="password" id="pass" placeholder="Password" formControlName="password" checkValidity
+                [isValid]="registerForm.get('password').valid">
 
             <div class="text-center">
                 <button class="button btn-login" (click)="registerUser()">Register</button>

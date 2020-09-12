@@ -33,7 +33,7 @@ LoggedIn.args = {
   isLoggedIn: true
 };
 
-export const LoggedOut = Template.bind({});
-LoggedOut.args = {
-  isLoggedIn: false
-};
+// export const LoggedOut = Template.bind({});
+// LoggedOut.args = {
+//   isLoggedIn: false
+// };

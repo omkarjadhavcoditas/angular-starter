@@ -26,19 +26,21 @@ export class RegisterComponent implements OnInit {
     return this.fb.group({
       firstName: [null, Validators.compose([Validators.required])],
       lastName: [null, Validators.compose([Validators.required])],
-      userName: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])]
+      userName: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
+      password: [null, Validators.compose([Validators.required, Validators.minLength(4)])]
     })
   }
   registerUser() {
     if (this.registerForm.valid) {
-      this.registerService.registerUser(this.registerForm.value).subscribe((res:AuthUser) => {
+      this.registerService.registerUser(this.registerForm.value).subscribe((res: AuthUser) => {
         if (res) {
           alert('User Registered Successfully');
           this.registerForm.reset();
           this.router.navigate(['./login']);
         }
       }, err => alert(err))
+    } else {
+      alert('Fiil form properly')
     }
     console.log("this.registerForm.value ", this.registerForm.value);
   }

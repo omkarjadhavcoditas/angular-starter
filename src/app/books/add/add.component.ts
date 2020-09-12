@@ -28,9 +28,9 @@ export class AddComponent implements OnInit {
 
   private createForm() {
     return this.fb.group({
-      name: [null, Validators.compose([Validators.required])],
-      image: [null, Validators.compose([Validators.required])],
-      price: [null, Validators.compose([Validators.required])]
+      name: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
+      image: [null, Validators.compose([Validators.required, Validators.pattern(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i)])],
+      price: [null, Validators.compose([Validators.required, Validators.pattern('^[1-9]([0-9]+)?(.[0-9]+)?')])]
     })
   }
   public addBook() {

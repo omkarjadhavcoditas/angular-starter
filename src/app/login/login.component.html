@@ -5,9 +5,11 @@
         <hr>
         <form class="main-form" [formGroup]="loginForm">
             <label for="username">Username</label>
-            <input type="text" id="username" placeholder="Username" formControlName="userName">
+            <input type="text" id="username" placeholder="Username" formControlName="userName" checkValidity
+                [isValid]="loginForm.get('userName').valid">
             <label for="password">Password</label>
-            <input type="password" id="password" placeholder="Password" formControlName="password">
+            <input type="password" id="password" placeholder="Password" formControlName="password" checkValidity
+                [isValid]="loginForm.get('password').valid">
 
             <div class="text-center">
                 <button class="button btn-login" (click)="checkUserExistance()">Login</button>

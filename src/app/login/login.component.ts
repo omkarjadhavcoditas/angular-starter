@@ -27,19 +27,16 @@ export class LoginComponent implements OnInit {
 
   private createForm() {
     return this.fb.group({
-      userName: [null, Validators.compose([Validators.required])],
-      password: [null, Validators.compose([Validators.required])]
+      userName: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
+      password: [null, Validators.compose([Validators.required, Validators.minLength(4)])]
     })
   }
 
   checkUserExistance() {
-    console.log("this.loginForm.value ", this.loginForm.value);
     if (this.loginForm.valid) {
       this.loginService.checkLoginUser(this.loginForm.value).subscribe((res: AuthUser[]) => {
-        console.log("res ", res);
         if (res && res.length > 0) {
           alert('Logged In Successfully');
-          delete res[0].password;
           this.appService.storeLoginUser(res[0]);
           this.loginForm.reset();
           this.router.navigate(['./books/list']);

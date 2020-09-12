@@ -5,41 +5,54 @@
       "lastName": "Jadhav",
       "userName": "Ojadhav",
       "password": "1234",
+      "isLightTheme": true,
       "id": 1
     },
     {
-      "firstName": "Omkar",
-      "lastName": "Jad",
-      "userName": "user1",
-      "password": "pass",
+      "firstName": "Michel",
+      "lastName": "Codita",
+      "userName": "michel",
+      "password": "1111",
+      "isLightTheme": false,
       "id": 2
     },
     {
-      "firstName": "User",
-      "lastName": "Lasst",
-      "userName": "user",
-      "password": "1111",
+      "firstName": "Coditas",
+      "lastName": "Solution",
+      "userName": "coditas",
+      "password": "1234",
+      "isLightTheme": false,
       "id": 3
     },
     {
-      "firstName": "Omkar",
-      "lastName": "Kadja",
-      "userName": "newuser",
-      "password": "1234",
+      "firstName": "Chanakya",
+      "lastName": "Niti",
+      "userName": "chanakya",
+      "password": "1111",
+      "isLightTheme": true,
       "id": 4
     },
     {
-      "firstName": "Omi",
-      "lastName": "Jadhav",
-      "userName": "Omi",
-      "password": "1234",
+      "firstName": "Author",
+      "lastName": "Newya",
+      "userName": "author",
+      "password": "1111",
+      "isLightTheme": false,
       "id": 5
+    },
+    {
+      "firstName": "Final",
+      "lastName": "Author",
+      "userName": "final",
+      "password": "1234",
+      "isLightTheme": false,
+      "id": 6
     }
   ],
   "allBooks": [
     {
       "name": "Bappa Morya",
-      "image": "https://lh6.googleusercontent.com/proxy/S_fmK6sox0BSdWFrIlDswZe_35bfZ1xfrAf5U1fJxuog-ua1icriCutRnDKWLiAOH0_WpW1dToGenmdpj5e8LQ=w180",
+      "image": "https://img.maalaimalar.com/Articles/2020/Jan/202001211210404528_Vinayagar-Viratham_SECVPF.gif",
       "price": "499",
       "id": 2,
       "user": 1

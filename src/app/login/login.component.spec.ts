@@ -1,25 +1,40 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { LoginComponent } from './login.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { Card } from '../../lit-element/card';
 
 describe('LoginComponent', () => {
   let component: LoginComponent;
   let fixture: ComponentFixture<LoginComponent>;
+  let userField: any;
+  let passwordField: any;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      declarations: [ LoginComponent ]
+      imports: [FormsModule, ReactiveFormsModule],
+      declarations: [LoginComponent, Card]
     })
-    .compileComponents();
+      .compileComponents();
   }));
 
   beforeEach(() => {
     fixture = TestBed.createComponent(LoginComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
+    userField = fixture.nativeElement.getElementById("username");
+    passwordField = fixture.nativeElement.getElementById("password");
+    console.log(userField, passwordField);
+
   });
 
   it('should create', () => {
     expect(component).toBeTruthy();
   });
+
+  it('Inputs are checked for null', () => {
+    expect(userField).toBe(null);
+    expect(passwordField).toBe(null);
+  });
+
 });

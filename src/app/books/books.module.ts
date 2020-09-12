@@ -9,6 +9,8 @@ import { StoreModule } from "@ngrx/store";
 import { BookReducer } from "./store/book-store.reducer";
 import { EffectsModule } from "@ngrx/effects";
 import { BooksEffect } from './store/book-store.effects';
+import { SharedModule } from './../directives/shared/shared.module';
+import { LoginGuard } from './../guards/login.guard';
 
 @NgModule({
   declarations: [ListComponent, AddComponent],
@@ -17,9 +19,11 @@ import { BooksEffect } from './store/book-store.effects';
     BooksRoutingModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     StoreModule.forFeature('books', BookReducer),
     EffectsModule.forFeature([BooksEffect])
   ],
+  providers: [LoginGuard],
   entryComponents: [Card],
   schemas: [CUSTOM_ELEMENTS_SCHEMA]
 })

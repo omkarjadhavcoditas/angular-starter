@@ -2,14 +2,14 @@ import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
 import { AddComponent } from './add/add.component';
 import { ListComponent } from './list/list.component';
-
+import { LoginGuard } from '../guards/login.guard';
 
 const routes: Routes = [
   {
-    path: '', redirectTo: 'all'
+    path: '', redirectTo: 'all', pathMatch: 'full'
   },
   {
-    path: 'add', component: AddComponent
+    path: 'add', component: AddComponent, canActivate: [LoginGuard]
   },
   {
     path: 'list', component: ListComponent
@@ -21,7 +21,7 @@ const routes: Routes = [
     path: 'update/:id', component: AddComponent
   },
   {
-    path: '**', redirectTo: 'all'
+    path: '**', redirectTo: 'all', pathMatch: 'full'
   }
 
 ];

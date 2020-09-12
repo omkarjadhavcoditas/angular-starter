@@ -12,6 +12,7 @@ import { StoreModule } from "@ngrx/store";
 import { StoreDevtoolsModule } from "@ngrx/store-devtools";
 import { Card } from './../lit-element/card';
 import { EffectsModule } from "@ngrx/effects";
+import { SharedModule } from './directives/shared/shared.module';
 
 @NgModule({
   declarations: [
@@ -26,11 +27,11 @@ import { EffectsModule } from "@ngrx/effects";
     HttpClientModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule,
     StoreModule.forRoot({}),
     StoreDevtoolsModule.instrument(),
     EffectsModule.forRoot([])
   ],
-  providers: [],
   bootstrap: [AppComponent],
   entryComponents: [Card],
   schemas: [
