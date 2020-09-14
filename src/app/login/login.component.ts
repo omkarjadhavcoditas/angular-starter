@@ -23,6 +23,7 @@ export class LoginComponent implements OnInit {
   ) { }
 
   ngOnInit(): void {
+    this.appService.setPageTitle('Login');
     this.loginForm = this.createForm();
   }
 

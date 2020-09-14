@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
+import { Title } from '@angular/platform-browser';
 
 import { AuthUser } from './register/register.domain';
 
@@ -12,7 +13,8 @@ export class AppService {
   private readonly serverUrl = 'http://localhost:3000/authUsers';
 
   constructor(
-    private httpClient: HttpClient
+    private httpClient: HttpClient,
+    private titleService: Title
   ) {
     this.loginTrigger = new BehaviorSubject<boolean>(null);
   }
@@ -40,5 +42,8 @@ export class AppService {
     const existingUser = this.getLoginUser();
     existingUser.isLightTheme = isDarkTheme;
     return this.httpClient.put(`${this.serverUrl}/${existingUser.id}`, existingUser)
+  }
+  public setPageTitle(title: string) {
+    this.titleService.setTitle(title);
   }
 }

@@ -30,6 +30,7 @@ export class ListComponent implements OnInit {
   }
 
   ngOnInit(): void {
+    this.appService.setPageTitle('Books Mania');
     this.checkLoginStatus();
     this.checkUrlLoad();
   }

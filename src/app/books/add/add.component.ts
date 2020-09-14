@@ -4,6 +4,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 
 import { Book } from './add.domain';
 import { BooksService } from './../books.service';
+import { AppService } from './../../app.service';
 
 @Component({
   selector: 'app-add',
@@ -18,11 +19,13 @@ export class AddComponent implements OnInit {
   constructor(
     private router: Router,
     private fb: FormBuilder,
+    private appService:AppService,
     private bookService: BooksService,
     private activatedRoute: ActivatedRoute,
   ) { }
 
   ngOnInit(): void {
+    this.appService.setPageTitle('Add Book');
     this.addBookForm = this.createForm();
     this.checkUrlLoad();
   }

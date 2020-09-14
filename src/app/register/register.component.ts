@@ -3,6 +3,7 @@ import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
 
 import { AuthUser } from './register.domain';
+import { AppService } from './../app.service';
 import { RegisterService } from './register.service';
 
 @Component({
@@ -16,10 +17,12 @@ export class RegisterComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private router: Router,
+    private appService:AppService,
     private registerService: RegisterService
   ) { }
 
   ngOnInit(): void {
+    this.appService.setPageTitle('Registration');
     this.registerForm = this.createForm();
   }
 
