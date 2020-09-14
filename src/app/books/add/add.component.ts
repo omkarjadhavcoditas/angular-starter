@@ -1,8 +1,9 @@
+import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { FormGroup, FormBuilder, Validators } from '@angular/forms';
+
 import { Book } from './add.domain';
 import { BooksService } from './../books.service';
-import { Component, OnInit } from '@angular/core';
-import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 
 @Component({
   selector: 'app-add',
@@ -29,7 +30,7 @@ export class AddComponent implements OnInit {
   private createForm() {
     return this.fb.group({
       name: [null, Validators.compose([Validators.required, Validators.minLength(4)])],
-      image: [null, Validators.compose([Validators.required, Validators.pattern(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif))/i)])],
+      image: [null, Validators.compose([Validators.required, Validators.pattern(/([a-z\-_0-9\/\:\.]*\.(jpg|jpeg|png|gif|svg))/i)])],
       price: [null, Validators.compose([Validators.required, Validators.pattern('^[1-9]([0-9]+)?(.[0-9]+)?')])]
     })
   }

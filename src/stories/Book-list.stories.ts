@@ -1,13 +1,16 @@
-import { moduleMetadata, Story } from '@storybook/angular';
-import { Meta } from '@storybook/angular/types-6-0';
-import { CommonModule, APP_BASE_HREF } from '@angular/common';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { HttpClientModule } from '@angular/common/http';
-import { SharedModule } from '../app/directives/shared/shared.module';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
-import { ListComponent } from './../app/books/list/list.component';
+import { HttpClientModule } from '@angular/common/http';
+import { CommonModule, APP_BASE_HREF } from '@angular/common';
+
+import { Meta } from '@storybook/angular/types-6-0';
+import { BrowserModule } from '@angular/platform-browser';
+import { moduleMetadata, Story } from '@storybook/angular';
+
 import { StoreModule } from '@ngrx/store';
+
+import { ListComponent } from './../app/books/list/list.component';
+import { SharedModule } from '../app/directives/shared/shared.module';
 
 export default {
     title: 'Book List',

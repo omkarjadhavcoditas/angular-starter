@@ -1,9 +1,11 @@
-import { BooksService } from './../books.service';
-import { Book } from './../add/add.domain';
-import { AppService } from './../../app.service';
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, UrlSegment } from '@angular/router';
+
 import { Store } from '@ngrx/store';
+
+import { Book } from './../add/add.domain';
+import { AppService } from './../../app.service';
+import { BooksService } from './../books.service';
 import * as BooksAction from '../store/book-store.actions';
 
 @Component({

@@ -1,9 +1,10 @@
-import { AppService } from './../app.service';
-import { AuthUser } from './../register/register.domain';
-import { LoginService } from './login.service';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { Validators, FormGroup, FormBuilder } from '@angular/forms';
-import { Router } from '@angular/router';
+
+import { AppService } from './../app.service';
+import { LoginService } from './login.service';
+import { AuthUser } from './../register/register.domain';
 
 @Component({
   selector: 'app-login',

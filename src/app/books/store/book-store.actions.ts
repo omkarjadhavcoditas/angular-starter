@@ -1,14 +1,15 @@
-import { Action } from "@ngrx/store";
+import { Action } from '@ngrx/store';
+
 import { Book } from './../add/add.domain';
 
 export enum BooksActionType {
-    LOAD_ALL_BOOKS = "[BOOKS] Load All Books",
-    LOAD_ALL_BOOKS_SUCCESS = "[BOOKS] Load Books Success",
-    LOAD_ALL_BOOKS_FAIL = "[BOOKS] Load Books Fail",
+    LOAD_ALL_BOOKS = '[BOOKS] Load All Books',
+    LOAD_ALL_BOOKS_SUCCESS = '[BOOKS] Load Books Success',
+    LOAD_ALL_BOOKS_FAIL = '[BOOKS] Load Books Fail',
 
-    LOAD_LOGIN_BOOKS = "[BOOKS] Load Login Books",
-    LOAD_LOGIN_BOOKS_SUCCESS = "[BOOKS] Load Books Success",
-    LOAD_LOGIN_BOOKS_FAIL = "[BOOKS] Load Books Fail",
+    LOAD_LOGIN_BOOKS = '[BOOKS] Load Login Books',
+    LOAD_LOGIN_BOOKS_SUCCESS = '[BOOKS] Load Books Success',
+    LOAD_LOGIN_BOOKS_FAIL = '[BOOKS] Load Books Fail'
 }
 
 export class LoadAllBooks implements Action {

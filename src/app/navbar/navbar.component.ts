@@ -1,6 +1,7 @@
-import { AppService } from './../app.service';
-import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
 import { Router } from '@angular/router';
+import { Component, OnInit, ViewChild, ElementRef } from '@angular/core';
+
+import { AppService } from './../app.service';
 import { AuthUser } from './../register/register.domain';
 
 @Component({

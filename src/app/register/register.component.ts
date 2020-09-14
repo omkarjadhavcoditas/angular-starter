@@ -1,8 +1,9 @@
-import { AuthUser } from './register.domain';
-import { RegisterService } from './register.service';
+import { Router } from '@angular/router';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators, FormGroup } from '@angular/forms';
-import { Router } from '@angular/router';
+
+import { AuthUser } from './register.domain';
+import { RegisterService } from './register.service';
 
 @Component({
   selector: 'app-register',
@@ -42,6 +43,5 @@ export class RegisterComponent implements OnInit {
     } else {
       alert('Fiil form properly')
     }
-    console.log("this.registerForm.value ", this.registerForm.value);
   }
 }

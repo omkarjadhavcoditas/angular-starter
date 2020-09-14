@@ -1,11 +1,13 @@
+import { of, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
-import { Actions, Effect, ofType } from "@ngrx/effects";
-import { Action } from "@ngrx/store";
-import { of, Observable } from "rxjs";
-import { map, mergeMap, catchError } from "rxjs/operators";
-import { BooksService } from './../books.service';
+import { map, mergeMap, catchError } from 'rxjs/operators';
+
+import { Action } from '@ngrx/store';
+import { Actions, Effect, ofType } from '@ngrx/effects';
+
 import { Book } from './../add/add.domain';
-import * as BooksAction from "./book-store.actions";
+import { BooksService } from './../books.service';
+import * as BooksAction from './book-store.actions';
 
 @Injectable()
 export class BooksEffect {

@@ -112,6 +112,13 @@
       "price": "699",
       "user": 3,
       "id": 10
+    },
+    {
+      "name": "NgRx",
+      "image": "https://ngrx.io/assets/images/badge.svg",
+      "price": "450",
+      "id": 11,
+      "user": 4
     }
   ]
 }

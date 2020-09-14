@@ -1,10 +1,11 @@
-import { moduleMetadata } from '@storybook/angular';
-import { CommonModule } from '@angular/common';
-import { Story, Meta } from '@storybook/angular/types-6-0';
-import { NavbarComponent } from './../app/navbar/navbar.component';
-import { BrowserModule } from '@angular/platform-browser';
 import { RouterModule } from '@angular/router';
-import { APP_BASE_HREF } from '@angular/common';
+import { CommonModule, APP_BASE_HREF } from '@angular/common';
+
+import { Meta } from '@storybook/angular/types-6-0';
+import { BrowserModule } from '@angular/platform-browser';
+import { moduleMetadata, Story } from '@storybook/angular';
+
+import { NavbarComponent } from './../app/navbar/navbar.component';
 
 export default {
   title: 'Header',
@@ -32,8 +33,3 @@ LoggedIn.args = {
   user: {},
   isLoggedIn: true
 };
-
-// export const LoggedOut = Template.bind({});
-// LoggedOut.args = {
-//   isLoggedIn: false
-// };

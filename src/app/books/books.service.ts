@@ -1,9 +1,9 @@
-import { AuthUser } from './../register/register.domain';
-import { AppService } from './../app.service';
-import { HttpClient, HttpParams } from '@angular/common/http';
-import { Book } from './add/add.domain';
-import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
+import { Injectable } from '@angular/core';
+import { HttpClient, HttpParams } from '@angular/common/http';
+
+import { Book } from './add/add.domain';
+import { AppService } from './../app.service';
 
 @Injectable({
   providedIn: 'root'

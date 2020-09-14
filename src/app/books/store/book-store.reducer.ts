@@ -1,6 +1,6 @@
-import * as fromRoot from "../../app-state/app-state";
-import * as BooksActions from "./book-store.actions";
 import { Book } from './../add/add.domain';
+import * as fromRoot from '../../app-state/app-state';
+import * as BooksActions from './book-store.actions';
 
 export interface AppState extends fromRoot.AppState {
     allBooks: Book[],
