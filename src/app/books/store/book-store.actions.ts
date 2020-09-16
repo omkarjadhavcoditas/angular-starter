@@ -9,7 +9,11 @@ export enum BooksActionType {
 
     LOAD_LOGIN_BOOKS = '[BOOKS] Load Login Books',
     LOAD_LOGIN_BOOKS_SUCCESS = '[BOOKS] Load Books Success',
-    LOAD_LOGIN_BOOKS_FAIL = '[BOOKS] Load Books Fail'
+    LOAD_LOGIN_BOOKS_FAIL = '[BOOKS] Load Books Fail',
+
+    DELETE_BOOKS = '[BOOKS] Delete Books',
+    DELETE_BOOKS_SUCCESS = '[BOOKS] Delete Book Success',
+    DELETE_BOOKS_FAIL = '[BOOKS] Delete Book Fail'
 }
 
 export class LoadAllBooks implements Action {
@@ -36,6 +40,20 @@ export class LoadLoginBooksFail implements Action {
     constructor(public payload: string) { }
 }
 
+export class DeleteBook implements Action {
+    readonly type = BooksActionType.DELETE_BOOKS;
+    constructor(public payload: number) { }
+}
+export class DeleteBookSuccess implements Action {
+    readonly type = BooksActionType.DELETE_BOOKS_SUCCESS;
+    constructor(public payload: number) { }
+}
+export class DeleteBookFail implements Action {
+    readonly type = BooksActionType.DELETE_BOOKS_FAIL;
+    constructor(public payload: string) { }
+}
+
 export type Actions =
     LoadAllBooks | LoadAllBooksSuccess | LoadAllBooksFail |
-    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail
+    LoadLoginBooks | LoadLoginBooksSuccess | LoadLoginBooksFail |
+    DeleteBook | DeleteBookSuccess | DeleteBookFail

@@ -53,19 +53,14 @@ export class ListComponent implements OnInit {
   }
   private getAllBooks() {
     this.store.dispatch(new BooksAction.LoadAllBooks());
-    this.store.subscribe(state => (this.booksList = state.books.allBooks)
-    )
-    // this.booksService.getAllBooksList().subscribe((allBooks: Book[]) => {
-    //   this.booksList = allBooks;
-    // })
+    this.store.subscribe(state => {
+      this.booksList = [...state.books.allBooks]
+    })
   }
   private getLoginUserBooks() {
     this.store.dispatch(new BooksAction.LoadLoginBooks());
-    this.store.subscribe(state => (this.booksList = state.books.allBooks)
-    )
-    // this.booksService.getLoginUserBooksList().subscribe((allBooks: Book[]) => {
-    //   this.booksList = allBooks;
-    // })
+    this.store.subscribe(state => (this.booksList = [...state.books.allBooks]))
+
   }
   public editBookOpt(bookId: number) {
     this.router.navigate([`../update/${bookId}`], { relativeTo: this.activatedRoute });

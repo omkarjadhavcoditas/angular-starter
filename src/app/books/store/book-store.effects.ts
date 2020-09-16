@@ -2,7 +2,7 @@ import { of, Observable } from 'rxjs';
 import { Injectable } from '@angular/core';
 import { map, mergeMap, catchError } from 'rxjs/operators';
 
-import { Action } from '@ngrx/store';
+import { Action, Store } from '@ngrx/store';
 import { Actions, Effect, ofType } from '@ngrx/effects';
 
 import { Book } from './../add/add.domain';
@@ -12,6 +12,7 @@ import * as BooksAction from './book-store.actions';
 @Injectable()
 export class BooksEffect {
     constructor(
+        private store: Store,
         private actions$: Actions,
         private bookservice: BooksService
     ) { }
@@ -38,6 +39,19 @@ export class BooksEffect {
                     new BooksAction.LoadLoginBooksSuccess(books)
                 ),
                 catchError(err => of(new BooksAction.LoadLoginBooksFail(err)))
+            )
+        )
+    )
+
+    @Effect()
+    deleteBookById$: Observable<Action> = this.actions$.pipe(
+        ofType<BooksAction.DeleteBook>(BooksAction.BooksActionType.DELETE_BOOKS),
+        mergeMap((action: BooksAction.DeleteBook) =>
+            this.bookservice.deleteBookById(action.payload).pipe(
+                map((books: Book) =>
+                    new BooksAction.DeleteBookSuccess(action.payload)
+                ),
+                catchError(err => of(new BooksAction.DeleteBookFail(err)))
             )
         )
     )
